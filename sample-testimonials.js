@@ -1,7 +1,7 @@
 // Sample testimonial data to be inserted into the database
 const sampleTestimonials = [
   {
-    name: "Sarah Johnson",
+    name: "Sarah Johnson", 
     position: "Marketing Director",
     company: "TechCorp Solutions",
     testimonial: "<p>Working with <strong>Outlfy</strong> has been a game-changer for our business. Their expertise in digital transformation helped us <em>increase our online presence by 300%</em> and streamline our operations significantly.</p><p>The team was incredibly professional throughout the entire process. They took the time to understand our unique challenges and provided tailored solutions that exceeded our expectations.</p><p>Their strategic approach to digital marketing not only boosted our visibility but also improved our conversion rates dramatically. The ROI we've seen from their efforts has been outstanding, and we continue to see growth month over month.</p>",
