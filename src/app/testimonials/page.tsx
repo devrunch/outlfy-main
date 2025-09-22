@@ -5,7 +5,7 @@ import { getTestimonials } from '@/admin/models/Testimonial';
 import RootLayout from "@/components/common/layout/RootLayout";
 import TestimonialGrid from '@/components/testimonials/TestimonialGrid';
 import TestimonialHero from '@/components/testimonials/TestimonialHero';
-
+export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Testimonials | Outlfy',
   description: 'Real client success stories and testimonials showcasing our digital transformation results',

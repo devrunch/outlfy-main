@@ -28,6 +28,13 @@
     },
 
     {
+      "nav_name": "Testimonials",
+      "link": "/testimonials",
+      "type": "",
+      "sub_nav": []
+    },
+
+    {
       "nav_name": "About Us",
       "link": "/about",
       "type": "",
