@@ -7,8 +7,29 @@ import TestimonialGrid from '@/components/testimonials/TestimonialGrid';
 import TestimonialHero from '@/components/testimonials/TestimonialHero';
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
-  title: 'Testimonials | Outlfy',
-  description: 'Real client success stories and testimonials showcasing our digital transformation results',
+  title: 'Client Testimonials | Outlfy Success Stories',
+  description: 'Read what our clients say about Outlfy. Real success stories from businesses we\'ve helped scale with smart strategies and scalable solutions.',
+  openGraph: {
+    title: 'Client Testimonials | Outlfy Success Stories',
+    description: 'Read what our clients say about Outlfy. Real success stories from businesses we\'ve helped scale with smart strategies and scalable solutions.',
+    url: 'https://www.outlfy.com/testimonials',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy Client Testimonials'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Client Testimonials | Outlfy Success Stories',
+    description: 'Read what our clients say about Outlfy. Real success stories from businesses we\'ve helped scale with smart strategies and scalable solutions.',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
 };
 
 // Server-side function to fetch testimonials

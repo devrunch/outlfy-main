@@ -1,8 +1,29 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Tech Audit Services | Outlfy',
-  description: 'Outlfy provides comprehensive technology audits to optimize your systems and processes',
+  title: 'Free Tech Audit | Outlfy Technology Assessment',
+  description: 'Get a free technology audit from Outlfy. We assess your current tech stack and provide recommendations for scalable business growth.',
+  openGraph: {
+    title: 'Free Tech Audit | Outlfy Technology Assessment',
+    description: 'Get a free technology audit from Outlfy. We assess your current tech stack and provide recommendations for scalable business growth.',
+    url: 'https://www.outlfy.com/techaudit',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy Free Tech Audit'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Tech Audit | Outlfy Technology Assessment',
+    description: 'Get a free technology audit from Outlfy. We assess your current tech stack and provide recommendations for scalable business growth.',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
 };
 
 import RootLayout from "@/components/common/layout/RootLayout";

@@ -1,8 +1,29 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Technology Partnership | Outlfy',
-  description: 'Partner with Outlfy for ongoing technical support, strategy, and software development',
+  title: 'Tech Partnerships | Outlfy Technology Solutions',
+  description: 'Partner with Outlfy for comprehensive technology solutions. We provide smart strategies and scalable tech partnerships for business growth.',
+  openGraph: {
+    title: 'Tech Partnerships | Outlfy Technology Solutions',
+    description: 'Partner with Outlfy for comprehensive technology solutions. We provide smart strategies and scalable tech partnerships for business growth.',
+    url: 'https://www.outlfy.com/techpartnership',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy Tech Partnerships'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tech Partnerships | Outlfy Technology Solutions',
+    description: 'Partner with Outlfy for comprehensive technology solutions. We provide smart strategies and scalable tech partnerships for business growth.',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
 };
 
 import RootLayout from "@/components/common/layout/RootLayout";

@@ -12,8 +12,30 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
-  title: 'Outlfy - Technology Agency',
-  description: 'Custom software development and technology strategy solutions',
+  title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
+  description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
+  openGraph: {
+    title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
+    description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
+    url: 'https://www.outlfy.com/',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy - Your Long-Term Partner for Scalable Business Growth'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
+    description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  },
+  robots: 'index, follow'
 }
 
 export const viewport = {
