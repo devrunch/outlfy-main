@@ -34,6 +34,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/visiting_card',
+        destination: 'https://contact.outlfy.com',
+        permanent: true,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
