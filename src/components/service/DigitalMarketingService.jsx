@@ -10,89 +10,102 @@ const services = [
   {
     title: (
       <>
-        E-Commerce <br />
-        Suite
-      </>
-    ),
-    link: "https://store.outlfy.com",
-    content: [
-      "Launch Your All-in-One E-Commerce Empire in 45 Days (or We Work for Free)",
-      "Stop paying 3+ vendors for apps, inventory, and delivery. We bundle it all—saving you 40% in costs.",
-      "What You Get:",
-    ],
-    features: [
-      "+ AI-Powered Inventory System",
-      "+ Branded E-Commerce App + Website",
-      "+ Delivery Management Suite",
-      "+ 45-Day Deadline Guarantee",
-    ],
-    btnText: "Start Your E-Commerce Overhaul",
-    img: "assets/imgs/home_1.png",
-  },
-  {
-    title: (
-      <>
-        AI-Powered
-        <br />
-        Website Developer
+        Business Audit & Mapping
       </>
     ),
     link: "/contact",
     content: [
-      "Launch New Website Pages in 1 Click—Pay 0 for Future Updates.",
-      "No more $5,000+ dev bills for simple changes.",
-      "What You Get:",
+      "We begin by understanding how your business truly operates — from people and processes to tools and data.",
     ],
     features: [
-      "+ Custom Website + AI Admin Panel",
-      "+ Unlimited Pages/Blogs/Forms",
-      "+ Brand Consistency Guarantee",
+      "+ Deep-dive sessions with founders and key team members",
+      "+ Mapping every system, workflow, and data source",
+      "+ Identifying bottlenecks that slow down growth",
     ],
-    btnText: "Build Your Future-Proof Site",
-    img: "assets/imgs/home_2.png",
+    btnText: "Start Your Audit",
+    img: "assets/imgs/home_1.png",
+    insight: "💡 This step gives us the blueprint for how your business can scale faster, with fewer moving parts.",
   },
   {
     title: (
       <>
-        AI Workflow <br />
+        Process Design & <br />
         Automation
       </>
     ),
     link: "/contact",
     content: [
-      "Automate 500+ Hours/Year of Manual Work",
-      "HR, finance, ops—we handle the grunt work.",
-      "What You Get:",
+      "We convert complexity into simple, efficient workflows — automating wherever it saves time, cost, or errors.",
     ],
     features: [
-      "+ Pre-Built Templates",
-      "+ 24/7 Workflow Monitoring",
-      "+ 500-Hour Savings Guarantee",
+      "+ Redesigning workflows for clarity and efficiency",
+      "+ Introducing automation using AI, ERP, or low-code tools",
+      "+ Eliminating duplicate and manual tasks",
     ],
-    btnText: "Kill Repetitive Tasks Today",
-    img: "assets/imgs/home_3.png",
+    btnText: "Automate Your Workflows",
+    img: "assets/imgs/home_2.png",
+    insight: "💡 We make your business lighter, faster, and easier to run — without adding tech headaches.",
   },
   {
     title: (
       <>
-        Free Tech
-        <br />
-        Consultancy
+        Implementation & <br />
+        Integration
       </>
     ),
-    link: "/techaudit",
+    link: "/contact",
     content: [
-      "Free 45-Min Session: Discover How to Cut Tech Costs by 30%+",
-      "No pitch. Just a step-by-step plan to optimize your tech stack.",
-      "What You Get:",
+      "We integrate and deploy the right systems to match your business goals — ensuring every process, platform, and person works in sync.",
     ],
     features: [
-      "+ Tech Spend Audit",
-      "+ Custom Growth Roadmap",
-      "+ Limited Spots: Only 5/week",
+      "+ Deployment of ERP, CRM, HRMS, vendor & inventory systems, and many more",
+      "+ Real-world testing with your core teams to ensure reliability",
+      "+ Smooth transition from old tools to new, unified systems that just work",
     ],
-    btnText: "Claim Your Free Session",
+    btnText: "Get Started",
+    img: "assets/imgs/home_3.png",
+    note: "Note: Most of these software come free with us — no extra cost for your company.",
+    insight: "💡 Our goal is simple: get your systems running fast, seamlessly, and without unnecessary expense — so you can scale confidently from day one.",
+  },
+  {
+    title: (
+      <>
+        Reporting & <br />
+        Insights
+      </>
+    ),
+    link: "/contact",
+    content: [
+      "We bring all your business data into one place — turning information into decisions that move the needle.",
+    ],
+    features: [
+      "+ Building real-time dashboards and KPI trackers",
+      "+ Automating MIS reports and performance summaries",
+      "+ Highlighting where time, money, or effort is being lost",
+    ],
+    btnText: "View Insights",
     img: "assets/imgs/home_4.png",
+    insight: "💡 We make data simple — so every decision you make is backed by clarity, not guesswork.",
+  },
+  {
+    title: (
+      <>
+        Continuous Monitoring <br />
+        & Support
+      </>
+    ),
+    link: "/contact",
+    content: [
+      "We stay with you beyond setup — monitoring, improving, and scaling your systems as your business evolves.",
+    ],
+    features: [
+      "+ Weekly or monthly performance reviews",
+      "+ Proactive troubleshooting and updates",
+      "+ Continuous optimization for new challenges and growth stages",
+    ],
+    btnText: "Partner With Us",
+    img: "assets/imgs/home_5.png",
+    insight: "💡 You get a long-term tech partner who keeps your systems sharp, your data clean, and your growth predictable.",
   },
 ];
 
@@ -174,12 +187,12 @@ const DigitalMarketingService = () => {
           <div className="row">
             <div className="col-xxl-12">
               <div className="sec-title-wrapper pt-130 text-anim">
-                <h2 className="sec-sub-title title-anim">OUR PRODUCTS</h2>
+                <h2 className="sec-sub-title title-anim">OUR 5-STEP GROWTH SYSTEM</h2>
                 <h3 className="sec-title title-anim">
-                  Built from Experience. Designed for Impact.
+                  How We Build Systems That Scale
                 </h3>
                 <p>
-                  After years of building tech for fast-growing businesses, we’ve developed powerful products that solve real problems. If you’re in this space, there’s a high chance we already have the perfect solution for you.
+                  Every engagement at Outlfy follows a proven 5-step framework — built from experience across industries and designed for measurable business impact.
                   <br />
                   <Link href={"https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"} target="_blank" className="text-dark-emphasis">
                   <strong>Book a call — and let’s show you how we can help.</strong>

@@ -32,6 +32,14 @@ export const metadata: Metadata = {
   }
 };
 
+// Helper to convert Mongoose document to plain object
+const toPlainObject = (doc: any) => {
+  if (doc && typeof doc === 'object' && typeof doc.toObject === 'function') {
+    return doc.toObject({ getters: true, virtuals: false });
+  }
+  return doc;
+};
+
 // Server-side function to fetch testimonials
 async function getTestimonialsData(): Promise<any[] | null> {
   try {
@@ -45,8 +53,19 @@ async function getTestimonialsData(): Promise<any[] | null> {
       sortOrder: 'asc'
     });
 
-    if (result.success) {
-      return result.data || [];
+    if (result.success && Array.isArray(result.data)) {
+      // Convert Mongoose documents to plain objects
+      const plainData = result.data.map(item => {
+        const plain = toPlainObject(item);
+        // Ensure dates are serialized as strings
+        return {
+          ...plain,
+          _id: plain._id?.toString() || plain._id,
+          createdAt: plain.createdAt instanceof Date ? plain.createdAt.toISOString() : plain.createdAt,
+          updatedAt: plain.updatedAt instanceof Date ? plain.updatedAt.toISOString() : plain.updatedAt,
+        };
+      });
+      return plainData;
     } else {
       console.error('Failed to fetch testimonials:', result.error);
       return null; // Return null to indicate error

@@ -56,25 +56,25 @@ const DigitalMarketingHero = () => {
     let videoClose = videoCloseSection.current;
     let heroContent = document.querySelector(".hero__inner-3");
     let heroImage = document.querySelector(".hero3-img-ani");
-    
+
     if (videoCheck.current.checked) {
       wrapper.current.style.zIndex = "1";
       video.style.display = "none";
       videoClose.style.display = "block";
       heroArea.current.classList.add("start-video");
       headerArea.classList.add("bg-white");
-      
+
       // Fade out content
       if (heroContent) heroContent.style.opacity = "0.1";
       if (heroImage) heroImage.style.opacity = "0.1";
-      
+
     } else {
       wrapper.current.style.zIndex = "999";
       video.style.display = "block";
       videoClose.style.display = "none";
       heroArea.current.classList.remove("start-video");
       headerArea.classList.remove("bg-white");
-      
+
       // Fade in content
       if (heroContent) heroContent.style.opacity = "1";
       if (heroImage) heroImage.style.opacity = "1";
@@ -91,14 +91,18 @@ const DigitalMarketingHero = () => {
                 <h3 className="sec-title title-left" ref={titleLeft}>
                   TECH
                 </h3>
+
                 <h3 className="sec-title-small title-right" ref={titleRight} >
                   PARTNER
                 </h3>
               </div>
+
                 <div className="hero__text-3">
-                  <p className="hero__text-animation" ref={heroTextAnim}>
-                    Stop juggling developers, data teams, and marketers. We <strong>build, automate, and optimize</strong> your tech ecosystem—so you focus on growth.
+                  <p className="hero__text-animation mb-2" ref={heroTextAnim}>
+                   
+                    We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
                   </p>
+                  <a href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy" className="wc-btn-simple">Apply for a free strategy session.</a>
                 </div>
                 <div className="scroll-down">
                   <button>
@@ -115,7 +119,14 @@ const DigitalMarketingHero = () => {
             </div>
           </div>
         </div>
-        <div className="wrapper" ref={wrapper}>
+        <div className="intro-title d-none d-lg-block" style={{position:"absolute", left:'70%', top:'240px'}}>
+          <h4 className="video-title" style={{ marginLeft: "-80px" ,width:'380px'}} ref={videoTitle}>
+            {/* ▶ WATCH <span>HOW IT WORKS</span> */}
+          Outlfy helps non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
+
+          </h4>
+        </div>
+        <div className="wrapper" ref={wrapper} hidden>
           <div className="video-info">
             <div className="video-introw">
               <div
@@ -125,9 +136,9 @@ const DigitalMarketingHero = () => {
                 onClick={openVideo}
               />
               <div className="intro-title">
-                <h4 className="video-title" style={{marginLeft: "-80px"}} ref={videoTitle}>
+                <h4 className="video-title" style={{ marginLeft: "-80px" }} ref={videoTitle}>
                   {/* ▶ WATCH <span>HOW IT WORKS</span> */}
-                   We are here <span>to solve your tech problems</span>
+                  We are here <span>to solve your tech problems</span>
                 </h4>
                 <h4
                   className="video-title close-video-title"

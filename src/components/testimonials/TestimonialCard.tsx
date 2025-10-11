@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
+import './TestimonialCard.css';
 
 interface TestimonialCardProps {
   testimonial?: {
@@ -25,32 +26,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   testimonial,
   showVideo = false 
 }) => {
-  const featuredContentRef = useRef<HTMLDivElement>(null);
-  const regularContentRef = useRef<HTMLDivElement>(null);
-  const [featuredScrollable, setFeaturedScrollable] = useState(false);
-  const [regularScrollable, setRegularScrollable] = useState(false);
-
-  useEffect(() => {
-    const checkScrollable = (ref: React.RefObject<HTMLDivElement | null>, setScrollable: (scrollable: boolean) => void) => {
-      if (ref.current) {
-        const isScrollable = ref.current.scrollHeight > ref.current.clientHeight;
-        setScrollable(isScrollable);
-      }
-    };
-
-    // Check both content areas
-    checkScrollable(featuredContentRef, setFeaturedScrollable);
-    checkScrollable(regularContentRef, setRegularScrollable);
-
-    // Re-check on window resize
-    const handleResize = () => {
-      checkScrollable(featuredContentRef, setFeaturedScrollable);
-      checkScrollable(regularContentRef, setRegularScrollable);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [testimonial]);
   // Default testimonial for when no data is provided
   const defaultTestimonial = {
     _id: 'default',
@@ -83,17 +58,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
               <iframe
                 src={data.videoUrl}
                 title="Video Testimonial"
-                frameBorder="0"
                 allowFullScreen
                 className="testimonial-card__video-iframe"
               ></iframe>
             </div>
           )}
+        
         {/* Scrollable Testimonial Content */}
         <div 
-          ref={featuredContentRef}
           className="testimonial-card__content"
-          data-scrollable={featuredScrollable}
         >
           <div 
             className="testimonial-card__text" 
@@ -128,14 +101,15 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 
         {/* Hidden Social Links - Show on Hover */}
         <div className="testimonial-card__social">
-          <a 
+          {data.linkedinUrl && data.linkedinUrl !== '' && (
+            <a
             href={data.linkedinUrl} 
             target="_blank" 
             rel="noopener noreferrer"
             className="testimonial-card__social-link"
           >
             <i className="fab fa-linkedin-in"></i>
-          </a>
+          </a>)}
           <a 
             href={data.companySiteUrl} 
             target="_blank" 
@@ -145,187 +119,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             <i className="fas fa-external-link-alt"></i>
           </a>
         </div>
-
-        <style jsx>{`
-          /* Base Card Styles */
-          .testimonial-card {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            border-radius: 8px;
-            padding: 24px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: all 0.3s ease;
-          
-          }
-          
-          .testimonial-card:hover .testimonial-card__social {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-          }
-          .testimonial-card--featured {
-            background: 
-              radial-gradient(circle, rgba(41, 47, 51, 1) 0%, rgba(27, 31, 34, 1) 100%), 
-              url('/assets/Card.svg') center/cover;
-            color: white;
-          }
-
-          .testimonial-card:hover .testimonial-card__social {
-            opacity: 1;
-          }
-
-          /* Content Styles */
-          .testimonial-card__content {
-            color:white;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            padding-right: 8px;
-            position: relative;
-            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-          }
-
-          .testimonial-card__content::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 8px;
-            height: 40px;
-            background: linear-gradient(to bottom, transparent 0%, rgba(31, 41, 51, 0.8) 100%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-          }
-
-          /* Show fade when content is scrollable */
-          .testimonial-card__content[data-scrollable="true"]::after {
-            opacity: 1;
-          }
-
-          .testimonial-card__content:hover::after {
-            opacity: 1;
-          }
-
-          
-
-          .testimonial-card__content[data-scrollable="true"]::before {
-            opacity: 1;
-          }
-
-          .testimonial-card__content::-webkit-scrollbar {
-            width: 4px;
-          }
-
-          .testimonial-card__content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-          }
-
-          .testimonial-card__content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-          }
-
-          .testimonial-card__text  {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
-            }
-            
-            .testimonial-card__text :global(p) {
-              color: #C6CDD1 !important;
-            margin-bottom: 12px;
-          }
-
-         
-
-          .testimonial-card__video-iframe {
-            width: 100%;
-            height: 250px;
-            border-radius: 8px;
-          }
-
-          /* Footer Styles */
-          .testimonial-card__footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-
-          .testimonial-card__author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-          }
-
-          .testimonial-card__avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-
-          .testimonial-card__name {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            color: white;
-          }
-
-          .testimonial-card__position {
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            margin: 0;
-          }
-
-          .testimonial-card__company-logo {
-            height: 48px;
-            width: auto;
-            max-width: 80px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-            opacity: 0.8;
-          }
-
-          /* Social Links */
-          .testimonial-card__social {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            display: flex;
-            gap: 8px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-          }
-
-          .testimonial-card__social-link {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            font-size: 14px;
-          }
-
-          .testimonial-card__social-link:hover {
-            background: rgba(255, 255, 255, 0.2);
-          }
-
-          @media (max-width: 768px) {
-            .testimonial-card {
-              width: 100%;
-              max-width: 400px;
-            }
-          }
-        `}</style>
       </div>
     );
   }
@@ -348,9 +141,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           )}
       {/* Scrollable Testimonial Content */}
       <div 
-        ref={regularContentRef}
         className="testimonial-card__content"
-        data-scrollable={regularScrollable}
       >
         <div 
           className="testimonial-card__text" 
@@ -384,6 +175,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 
       {/* Hidden Social Links - Show on Hover */}
       <div className="testimonial-card__social">
+        {data.linkedinUrl && 
         <a 
           href={data.linkedinUrl} 
           target="_blank" 
@@ -391,7 +183,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           className="testimonial-card__social-link"
         >
           <i className="fab fa-linkedin-in"></i>
-        </a>
+        </a>}
         <a 
           href={data.companySiteUrl} 
           target="_blank" 
@@ -401,182 +193,6 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           <i className="fas fa-external-link-alt"></i>
         </a>
       </div>
-
-      <style jsx>{`
-        /* Base Card Styles */
-        .testimonial-card {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          border-radius: 8px;
-          padding: 24px;
-          width: auto;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-          transition: all 0.3s ease;
-        }
-
-        .testimonial-card--regular {
-          background: transparent;
-          color: #374151;
-          // box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-          border: 1.5px solid #e5e7eb;
-        }
-
-        .testimonial-card:hover .testimonial-card__social {
-          opacity: 1;
-        }
-
-        /* Content Styles */
-        .testimonial-card__content {
-       
-          overflow-y: auto;
-          margin-bottom: 20px;
-          padding-right: 8px;
-          position: relative;
-          mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-          -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-        }
-
-        .testimonial-card__content::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 8px;
-          height: 30px;
-          background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.9) 100%);
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        /* Show fade when content is scrollable */
-        .testimonial-card__content[data-scrollable="true"]::after {
-          opacity: 1;
-        }
-
-        .testimonial-card__content:hover::after {
-          opacity: 1;
-        }
-
-       
-
-        .testimonial-card__content[data-scrollable="true"]::before {
-          opacity: 1;
-        }
-
-        .testimonial-card__content::-webkit-scrollbar {
-          width: 4px;
-        }
-
-        .testimonial-card__content::-webkit-scrollbar-track {
-          // background: rgba(0, 0, 0, 0.05);
-        }
-
-        .testimonial-card__content::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-        }
-
-        .testimonial-card__text {
-          font-family: 'Inter', sans-serif;
-          font-size: 14px;
-          line-height: 1.6;
-          color: #374151;
-        }
-          /* Video Styles */
-         
-
-          .testimonial-card__video-iframe {
-            width: 100%;
-            height: 250px;
-            border-radius: 8px;
-          }
-
-        .testimonial-card__text :global(p) {
-          margin-bottom: 12px;
-        }
-
-        /* Footer Styles */
-        .testimonial-card__footer {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .testimonial-card__author {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .testimonial-card__avatar {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-
-        .testimonial-card__name {
-          font-family: 'Inter', sans-serif;
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0 0 4px 0;
-          color: #1f2937;
-        }
-
-        .testimonial-card__position {
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          color: #6b7280;
-          margin: 0;
-        }
-
-        .testimonial-card__company-logo {
-          height: 48px;
-          width: auto;
-          max-width: 80px;
-          object-fit: contain;
-        }
-
-        /* Social Links */
-        .testimonial-card__social {
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          display: flex;
-          gap: 8px;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .testimonial-card__social-link {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background: #f3f4f6;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #6b7280;
-          text-decoration: none;
-          transition: all 0.2s ease;
-          font-size: 14px;
-        }
-
-        .testimonial-card__social-link:hover {
-          background: #3b82f6;
-          color: white;
-        }
-
-        @media (max-width: 768px) {
-          .testimonial-card {
-            width: 100%;
-            max-width: 400px;
-          }
-        }
-      `}</style>
     </div>
   );
 };

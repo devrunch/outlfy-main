@@ -171,35 +171,41 @@ const TestimonialView = ({ testimonial, onEdit, onClose, onDelete }) => {
             </div>
             <div className="card-body">
               <div className="row">
-                <div className="col-md-6">
-                  <div className="mb-3">
-                    <label className="form-label fw-bold">LinkedIn Profile</label>
-                    <p>
-                      <a 
-                        href={testimonial.linkedinUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="btn btn-sm btn-outline-primary"
-                      >
-                        <i className="fab fa-linkedin me-1"></i>
-                        View Profile
-                      </a>
-                    </p>
+                {testimonial.linkedinUrl && (
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">LinkedIn Profile</label>
+                      <p>
+                        <a 
+                          href={testimonial.linkedinUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn btn-sm btn-outline-primary"
+                        >
+                          <i className="fab fa-linkedin me-1"></i>
+                          View Profile
+                        </a>
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-6">
+                )}
+                <div className={testimonial.linkedinUrl ? "col-md-6" : "col-md-12"}>
                   <div className="mb-3">
                     <label className="form-label fw-bold">Company Website</label>
                     <p>
-                      <a 
-                        href={testimonial.companySiteUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="btn btn-sm btn-outline-primary"
-                      >
-                        <i className="fas fa-external-link-alt me-1"></i>
-                        Visit Site
-                      </a>
+                      {testimonial.companySiteUrl ? (
+                        <a 
+                          href={testimonial.companySiteUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn btn-sm btn-outline-primary"
+                        >
+                          <i className="fas fa-external-link-alt me-1"></i>
+                          Visit Site
+                        </a>
+                      ) : (
+                        <span className="text-muted">Not provided</span>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -216,6 +222,13 @@ const TestimonialView = ({ testimonial, onEdit, onClose, onDelete }) => {
                       allowFullScreen
                     ></iframe>
                   </div>
+                </div>
+              )}
+              
+              {!testimonial.linkedinUrl && !testimonial.videoUrl && testimonial.companySiteUrl && (
+                <div className="alert alert-info mb-0">
+                  <i className="fas fa-info-circle me-2"></i>
+                  Only company website is available for this testimonial.
                 </div>
               )}
             </div>

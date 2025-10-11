@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  sassOptions: {
+    silenceDeprecations: ['mixed-decls', 'legacy-js-api', 'import', 'slash-div'],
+    logger: {
+      warn: function(message) {
+        // Suppress all Sass warnings
+        return;
+      },
+      debug: function() {}
+    }
+  },
   images: {
     // Allow all external domains
     domains: [],

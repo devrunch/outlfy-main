@@ -71,10 +71,13 @@ const TestimonialSchema = new Schema(
     // Links
     linkedinUrl: {
       type: String,
-      required: true,
+      required: false,
+      default: '',
       validate: {
         validator: function(v) {
-          // Allow both personal profiles (/in/) and company pages (/company/)
+          // If empty or undefined, it's valid (optional field)
+          if (!v || v.trim() === '') return true;
+          // If provided, validate format: allow both personal profiles (/in/) and company pages (/company/)
           return /^https?:\/\/(www\.)?linkedin\.com\/(in|company)\/[a-zA-Z0-9-]+\/?$/.test(v);
         },
         message: 'Please provide a valid LinkedIn profile or company URL'
@@ -275,10 +278,41 @@ export const getTestimonialById = async (id) => {
 // UPDATE - Update testimonial by ID
 export const updateTestimonial = async (id, updateData) => {
   try {
+    // Separate fields to update and fields to unset
+    const updateFields = { ...updateData };
+    const unsetFields = {};
+
+    // Check for empty optional fields and move them to unset
+    if (updateFields.linkedinUrl === '' || updateFields.linkedinUrl === null || updateFields.linkedinUrl === undefined) {
+      unsetFields.linkedinUrl = '';
+      delete updateFields.linkedinUrl;
+    }
+    if (updateFields.videoUrl === '' || updateFields.videoUrl === null || updateFields.videoUrl === undefined) {
+      unsetFields.videoUrl = '';
+      delete updateFields.videoUrl;
+    }
+
+    // Build update operation
+    const updateOperation = {
+      $set: { ...updateFields, updatedAt: Date.now() }
+    };
+
+    // Add $unset operation if there are fields to remove
+    if (Object.keys(unsetFields).length > 0) {
+      updateOperation.$unset = unsetFields;
+    }
+
+    // When using $unset, we need to disable validators to avoid validation errors on removed fields
+    const options = {
+      new: true,
+      runValidators: Object.keys(unsetFields).length === 0, // Only run validators if not unsetting fields
+      context: 'query'
+    };
+
     const updatedTestimonial = await Testimonial.findByIdAndUpdate(
       id,
-      { ...updateData, updatedAt: Date.now() },
-      { new: true, runValidators: true }
+      updateOperation,
+      options
     );
 
     if (!updatedTestimonial) {

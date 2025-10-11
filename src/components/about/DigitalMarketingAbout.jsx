@@ -33,11 +33,11 @@ const DigitalMarketingAbout = () => {
               <div className="about__img-3">
                 <Image
                   priority
-                  style={{ width: "90", height: "auto" }}
+                  style={{ width: "100", height: "auto" }}
                   src={About31}
                   alt="About Thumbnail"
                   data-speed="auto"
-                  className="smootherReset768"
+                  className="smootherReset738"
                 />
               </div>
             </div>
@@ -46,13 +46,14 @@ const DigitalMarketingAbout = () => {
               <div className="sec-title-wrapper">
                 <h2 className="sec-sub-title title-anim">WHO WE ARE</h2>
                 <h3 className="sec-title title-anim">
-                  WE BUILD TECH THAT SCALES WITH YOU
+                  Building Businesses That Scale With Tech
                 </h3>
               </div>
               <div className="sec-text-wrapper">
                 <div className="sec-text text-anim">
                   <p>
-                    We’re <strong>Outlfy</strong>— your strategic tech partner for startups and scaling businesses. We don’t just write code;<strong> we eliminate growth bottlenecks</strong> through smart systems and technology built for scale.
+                    We’re Outlfy — your dedicated tech growth and scale partner. <br />
+                    Our mission is simple: to help founders with clarity, control, and freedom by building the systems, automations, and data-driven foundations that make scaling inevitable
 
                   </p>
                   <div className="feature-list" style={{ marginTop: "20px" }}>
@@ -61,8 +62,8 @@ const DigitalMarketingAbout = () => {
                           <i className="fa-solid fa-robot"></i>
                         </div>
                         <div className="feature-content">
-                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>AI-powered automation</strong></p>
-                          <p style={{ color: "var(--gray-2, #666)" }}>Boost efficiency with smart automation.</p>
+                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Tech Backbone Setup</strong></p>
+                          <p style={{ color: "var(--gray-2, #666)" }}>We design and manage your full tech ecosystem across HR, finance, CRM, and inventory.</p>
                         </div>
                     </div>
                     <div className="feature-item" style={{ display: "flex", alignItems: "flex-start" }}>
@@ -70,8 +71,9 @@ const DigitalMarketingAbout = () => {
                           <i className="fa-solid fa-layer-group"></i>
                         </div>
                         <div className="feature-content">
-                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>All-in-one tech stacks</strong></p>
-                          <p style={{ color: "var(--gray-2, #666)" }}>Streamline your tech ecosystem.</p>
+                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Automation & Optimization</strong></p>
+                          <p style={{ color: "var(--gray-2, #666)" }}>We automate repetitive tasks, fix inefficiencies, and boost productivity.
+</p>
                         </div>
                     </div>
                     <div className="feature-item" style={{ display: "flex", alignItems: "flex-start", color: "#e5e7eb" }}>
@@ -79,21 +81,12 @@ const DigitalMarketingAbout = () => {
                           <i className="fa-solid fa-chart-line"></i>
                         </div>
                         <div className="feature-content">
-                          <h4 style={{ fontSize: "18px", marginBottom: "5px" }}><strong>Data-driven decisions</strong></h4>
-                          <p style={{ color: "var(--gray-2, #666)" }}>We turn complex data into clear, growth-focused strategies through tailored reports.</p>
+                          <h4 style={{ fontSize: "18px", marginBottom: "5px" }}><strong>Data & Insights</strong></h4>
+                          <p style={{ color: "var(--gray-2, #666)" }}>We give you real-time visibility into operations with dashboards that guide every decision.</p>
                         </div>
                     </div>
                   </div>
-                  <div className="btn_wrapper">
-                    <Link
-                      className="wc-btn-light btn-hover btn-item text-center"
-                      href="/about"
-                    >
-                      <span></span>
-                      Explore How We Work
-                      {/* <i className="fa-solid fa-arrow-right"></i> */}
-                    </Link>
-                  </div>
+                  
                 </div>
               </div>
             </div>

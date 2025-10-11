@@ -109,17 +109,16 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
     if (!formData.testimonial.trim()) newErrors.testimonial = 'Testimonial is required';
     if (!formData.profilePicture) newErrors.profile = 'Profile picture is required';
     if (!formData.companyLogo) newErrors.logo = 'Company logo is required';
-    if (!formData.linkedinUrl.trim()) newErrors.linkedinUrl = 'LinkedIn URL is required';
     if (!formData.companySiteUrl.trim()) newErrors.companySiteUrl = 'Company website is required';
 
-    // URL validations
-    if (formData.linkedinUrl && !/^https?:\/\/(www\.)?linkedin\.com\/(in|company)\/[a-zA-Z0-9-]+\/?$/.test(formData.linkedinUrl)) {
+    // URL validations (only validate if field has a value)
+    if (formData.linkedinUrl && formData.linkedinUrl.trim() && !/^https?:\/\/(www\.)?linkedin\.com\/(in|company)\/[a-zA-Z0-9-]+\/?$/.test(formData.linkedinUrl)) {
       newErrors.linkedinUrl = 'Please enter a valid LinkedIn profile or company URL';
     }
-    if (formData.companySiteUrl && !/^https?:\/\/.+\..+/.test(formData.companySiteUrl)) {
+    if (formData.companySiteUrl && formData.companySiteUrl.trim() && !/^https?:\/\/.+\..+/.test(formData.companySiteUrl)) {
       newErrors.companySiteUrl = 'Please enter a valid website URL';
     }
-    if (formData.videoUrl && !/^https?:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]{11}(\?.*)?$/.test(formData.videoUrl)) {
+    if (formData.videoUrl && formData.videoUrl.trim() && !/^https?:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]{11}(\?.*)?$/.test(formData.videoUrl)) {
       newErrors.videoUrl = 'Please enter a valid YouTube embed URL (https://youtube.com/embed/VIDEO_ID)';
     }
 
@@ -265,7 +264,7 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
         </div>
 
         <div className="col-md-6">
-          <label className="form-label">LinkedIn URL *</label>
+          <label className="form-label">LinkedIn URL (Optional)</label>
           <input
             type="url"
             name="linkedinUrl"

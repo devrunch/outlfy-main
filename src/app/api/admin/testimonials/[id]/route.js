@@ -50,7 +50,7 @@ export async function GET(request, { params }) {
   try {
     await connectDB();
     const origin = request.headers.get('origin');
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(
@@ -84,7 +84,7 @@ export async function PUT(request, { params }) {
   try {
     await connectDB();
     const origin = request.headers.get('origin');
-    const { id } = params;
+    const { id } = await params;
     const data = await request.json();
 
     if (!id) {
@@ -119,7 +119,7 @@ export async function PATCH(request, { params }) {
   try {
     await connectDB();
     const origin = request.headers.get('origin');
-    const { id } = params;
+    const { id } = await params;
     const { action, status } = await request.json();
 
     if (!id) {
@@ -169,7 +169,7 @@ export async function DELETE(request, { params }) {
   try {
     await connectDB();
     const origin = request.headers.get('origin');
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(
