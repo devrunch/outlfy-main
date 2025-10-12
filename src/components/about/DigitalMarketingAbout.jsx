@@ -59,19 +59,19 @@ const DigitalMarketingAbout = () => {
                   <div className="feature-list" style={{ marginTop: "20px" }}>
                     <div className="feature-item" style={{ display: "flex", alignItems: "flex-start" }}>
                       <div className="feature-icon" style={{ marginRight: "15px", fontSize: "24px", color: "#e5e7eb" }}>
-                          <i className="fa-solid fa-robot"></i>
+                          <i className="fa-solid fa-microchip"></i>
                         </div>
                         <div className="feature-content">
-                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Tech Backbone Setup</strong></p>
+                          <h4 style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Tech Backbone Setup</strong></h4>
                           <p style={{ color: "var(--gray-2, #666)" }}>We design and manage your full tech ecosystem across HR, finance, CRM, and inventory.</p>
                         </div>
                     </div>
                     <div className="feature-item" style={{ display: "flex", alignItems: "flex-start" }}>
                       <div className="feature-icon" style={{ marginRight: "15px", fontSize: "24px", color: "#e5e7eb" }}>
-                          <i className="fa-solid fa-layer-group"></i>
+                          <i className="fa-solid fa-wand-sparkles"></i>
                         </div>
                         <div className="feature-content">
-                          <p style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Automation & Optimization</strong></p>
+                          <h4 style={{ fontSize: "18px", color: "#e5e7eb" }}><strong>Automation & Optimization</strong></h4>
                           <p style={{ color: "var(--gray-2, #666)" }}>We automate repetitive tasks, fix inefficiencies, and boost productivity.
 </p>
                         </div>

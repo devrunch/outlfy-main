@@ -10,7 +10,9 @@ const DigitalMarketingHero = () => {
   const titleLeft = useRef();
   const titleRight = useRef();
   const heroTextAnim = useRef();
-
+  const heroTextAnim2 = useRef();
+  const buttonAmin1 = useRef();
+  const buttonAmin2 = useRef();
   const videoCheck = useRef();
   const videoCloseSection = useRef();
   const videoTitle = useRef();
@@ -24,6 +26,9 @@ const DigitalMarketingHero = () => {
         type: "chars",
       });
       let split_text_animation = new SplitText(heroTextAnim.current, {
+        type: "chars words",
+      });
+      let split_text_animation2 = new SplitText(heroTextAnim2.current, {
         type: "chars words",
       });
       let tHero = gsap.context(() => {
@@ -44,6 +49,24 @@ const DigitalMarketingHero = () => {
           split_text_animation.words,
           { duration: 1, x: 50, autoAlpha: 0, stagger: 0.05 },
           "-=1"
+        );
+
+        HomeDigital.from(
+          split_text_animation2.words,
+          { duration: 1, x: 50, autoAlpha: 0, stagger: 0.05 },
+          "-=1"
+        );
+
+        // Add fade-in animation for buttons
+        HomeDigital.to(
+          buttonAmin1.current,
+          { duration: 1, opacity: 1, y: 0, ease: "power2.out" },
+          "-=0.5"
+        );
+        HomeDigital.to(
+          buttonAmin2.current,
+          { duration: 1, opacity: 1, y: 0, ease: "power2.out" },
+          "-=0.8"
         );
       });
       return () => tHero.revert();
@@ -86,23 +109,39 @@ const DigitalMarketingHero = () => {
         <div className="container">
           <div className="row">
             <div className="col-xxl-12">
-              <div className="hero__inner-3" style={{ transition: "opacity 0.5s ease-in-out" }}>                <div className="sec-title-wrapper">
-                <h2 className="sec-sub-title">YOUR</h2>
-                <h3 className="sec-title title-left" ref={titleLeft}>
-                  TECH
-                </h3>
+              <div className="hero__inner-3" style={{ transition: "opacity 0.5s ease-in-out" }}>
+                <div className="sec-title-wrapper">
+                  <h2 className="sec-sub-title">YOUR</h2>
+                  <h3 className="sec-title title-left" ref={titleLeft}>
+                    TECH
+                  </h3>
 
-                <h3 className="sec-title-small title-right" ref={titleRight} >
-                  PARTNER
-                </h3>
-              </div>
+                  <h3 className="sec-title-small title-right" ref={titleRight}>
+                    PARTNER
+                  </h3>
+                </div>
 
                 <div className="hero__text-3">
-                  <p className="hero__text-animation mb-2" ref={heroTextAnim}>
-                   
+                  <p className="hero__text-animation mb-2 video-title mt-3" ref={heroTextAnim}>
                     We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
                   </p>
-                  <a href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy" className="wc-btn-simple">Apply for a free strategy session.</a>
+                  <a
+                    ref={buttonAmin1}
+                    href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
+                    className="wc-btn-simple mt-3"
+                    style={{ opacity: 0 }}
+                  >
+                    Apply for a free strategy session.
+                  </a>
+                  <br />
+                  <a
+                    ref={buttonAmin2}
+                    href="#howwework"
+                    className="wc-btn-simple__light"
+                    style={{ opacity: 0 }}
+                  >
+                    See How we work.
+                  </a>
                 </div>
                 <div className="scroll-down">
                   <button>
@@ -114,52 +153,17 @@ const DigitalMarketingHero = () => {
                     />
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-        <div className="intro-title d-none d-lg-block" style={{position:"absolute", left:'70%', top:'240px'}}>
-          <h4 className="video-title" style={{ marginLeft: "-80px" ,width:'380px'}} ref={videoTitle}>
+        <div className="hero__text-3 d-none d-lg-block" style={{ position: "absolute", left: "70%", top: "240px" }}>
+          <p className=" hero__text-animation" style={{ marginLeft: "-80px", width: "380px" }} ref={heroTextAnim2}>
             {/* ▶ WATCH <span>HOW IT WORKS</span> */}
-          Outlfy helps non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
-
-          </h4>
+            Outlfy helps non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
+          </p>
         </div>
-        <div className="wrapper" ref={wrapper} hidden>
-          <div className="video-info">
-            <div className="video-introw">
-              <div
-                id="video_check"
-                type="checkbox"
-                ref={videoCheck}
-                onClick={openVideo}
-              />
-              <div className="intro-title">
-                <h4 className="video-title" style={{ marginLeft: "-80px" }} ref={videoTitle}>
-                  {/* ▶ WATCH <span>HOW IT WORKS</span> */}
-                  We are here <span>to solve your tech problems</span>
-                </h4>
-                <h4
-                  className="video-title close-video-title"
-                  ref={videoCloseSection}
-                >
-                  Close <span>video</span>
-                </h4>
-              </div>
-              {/* <div className="video">
-                <video
-                  src="assets/video/hero-3.mp4"
-                  loop
-                  muted
-                  autoPlay
-                  playsInline
-                ></video>
-              </div> */}
-            </div>
-          </div>
-        </div>
-
+      
         <div className="hero3-img-ani" style={{ transition: "opacity 0.5s ease-in-out" }}>
           <Image
             priority

@@ -126,7 +126,7 @@ const DigitalMarketingBrand = () => {
           <div className="row">
             <div className="col-xxl-12">
               <h2 className="brand__title-3 title-anim">
-                TRUSTED BY INNOVATORS
+                Trusted by Founders Who Think Big
               </h2>
 
               {/* For mobile: Marquee effect */}

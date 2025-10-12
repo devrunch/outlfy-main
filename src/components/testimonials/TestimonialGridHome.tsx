@@ -164,10 +164,10 @@ const TestimonialGridHome = async () => {
         `
       }} />
       
-      <div style={{ marginTop: "-180px" }}>
+      <div style={{ marginTop: "-120px" }}>
         <TestimonialHero />
 
-        <div className="container mt-5 mb-5">
+        <div className="container mt-60 mb-5">
           <div className={`testimonial-bento-grid${isCentered ? ' centered' : ''}`}>
             {testimonials.map((item) => (
               <div

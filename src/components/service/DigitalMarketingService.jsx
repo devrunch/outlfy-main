@@ -10,7 +10,7 @@ const services = [
   {
     title: (
       <>
-        Business Audit & Mapping
+        1.Business Audit & Mapping
       </>
     ),
     link: "/contact",
@@ -29,7 +29,7 @@ const services = [
   {
     title: (
       <>
-        Process Design & <br />
+        2.Process Design & <br />
         Automation
       </>
     ),
@@ -49,7 +49,7 @@ const services = [
   {
     title: (
       <>
-        Implementation & <br />
+        3.Implementation & <br />
         Integration
       </>
     ),
@@ -70,7 +70,7 @@ const services = [
   {
     title: (
       <>
-        Reporting & <br />
+        4.Reporting & <br />
         Insights
       </>
     ),
@@ -90,7 +90,7 @@ const services = [
   {
     title: (
       <>
-        Continuous Monitoring <br />
+        5. Continuous Monitoring <br />
         & Support
       </>
     ),
@@ -182,7 +182,7 @@ const DigitalMarketingService = () => {
 
   return (
     <>
-      <section className="service__area-3 pb-150">
+      <section id='howwework' className="service__area-3 pb-150">
         <div className="container">
           <div className="row">
             <div className="col-xxl-12">
