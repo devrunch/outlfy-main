@@ -48,7 +48,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   const data = testimonial || defaultTestimonial;
 
   // FEATURED CARD - DARK MATTE
-  if (data.featured) {
+  if (false) {
     return (
       <div className="testimonial-card testimonial-card--featured">
         

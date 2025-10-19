@@ -10,7 +10,7 @@ const services = [
   {
     title: (
       <>
-        1.Business Audit & Mapping
+        1. Business Audit & Mapping
       </>
     ),
     link: "/contact",
@@ -29,7 +29,7 @@ const services = [
   {
     title: (
       <>
-        2.Process Design & <br />
+        2. Process Design & <br />
         Automation
       </>
     ),
@@ -49,7 +49,7 @@ const services = [
   {
     title: (
       <>
-        3.Implementation & <br />
+        3. Implementation & <br />
         Integration
       </>
     ),
@@ -70,7 +70,7 @@ const services = [
   {
     title: (
       <>
-        4.Reporting & <br />
+        4. Reporting & <br />
         Insights
       </>
     ),

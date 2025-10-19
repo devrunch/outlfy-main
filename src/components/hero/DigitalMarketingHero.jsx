@@ -1,10 +1,13 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { SplitText } from "@/plugins";
 import ArrowDownSm from "../../../public/assets/imgs/icon/arrow-down-sm.png";
 import Hero31 from "../../../public/assets/imgs/hero/3/1.jpg";
 import Image from "next/image.js";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 const DigitalMarketingHero = () => {
   const titleLeft = useRef();
@@ -103,6 +106,23 @@ const DigitalMarketingHero = () => {
       if (heroImage) heroImage.style.opacity = "1";
     }
   };
+
+  const handleSmoothScroll = (e) => {
+    e.preventDefault();
+    const target = e.currentTarget.getAttribute('href');
+    
+    if (target && target.startsWith('#')) {
+      const element = document.querySelector(target);
+      if (element) {
+        gsap.to(window, {
+          duration: 1.5,
+          scrollTo: { y: element, offsetY: 80 },
+          ease: "power2.inOut"
+        });
+      }
+    }
+  };
+
   return (
     <>
       <section className="hero__area-3" ref={heroArea}>
@@ -124,6 +144,9 @@ const DigitalMarketingHero = () => {
                 <div className="hero__text-3">
                   <p className="hero__text-animation mb-2 video-title mt-3" ref={heroTextAnim}>
                     We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
+                    <br />
+                    <span className="d-block d-lg-none">We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
+</span>
                   </p>
                   <a
                     ref={buttonAmin1}
@@ -137,6 +160,7 @@ const DigitalMarketingHero = () => {
                   <a
                     ref={buttonAmin2}
                     href="#howwework"
+                    onClick={handleSmoothScroll}
                     className="wc-btn-simple__light"
                     style={{ opacity: 0 }}
                   >
@@ -160,7 +184,7 @@ const DigitalMarketingHero = () => {
         <div className="hero__text-3 d-none d-lg-block" style={{ position: "absolute", left: "70%", top: "240px" }}>
           <p className=" hero__text-animation" style={{ marginLeft: "-80px", width: "380px" }} ref={heroTextAnim2}>
             {/* ▶ WATCH <span>HOW IT WORKS</span> */}
-            Outlfy helps non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
+            We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
           </p>
         </div>
       
