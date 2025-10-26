@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import RootLayout from "@/components/common/layout/RootLayout";
 import CaseStudyDetail from "@/components/casestudy/CaseStudyDetail";
+import dbConnect from "@/lib/mongodb";
+import CaseStudyModel from "@/admin/models/CaseStudy";
 import { CaseStudy } from '@/types/case-study';
 export const dynamic = "force-dynamic";
 interface CaseStudyPageProps {
@@ -12,32 +14,24 @@ interface CaseStudyPageProps {
 
 async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
   try {
-    const envUrl = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
-    const baseUrl = envUrl
-      ? envUrl.startsWith('http')
-        ? envUrl
-        : `https://${envUrl}`
-      : process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : undefined;
+    await dbConnect();
 
-    if (!baseUrl) {
-      throw new Error('Unable to resolve base URL for case study request');
-    }
+    const caseStudy = await CaseStudyModel.findOne({
+      slug,
+      status: 'published'
+    })
+      .select('-__v')
+      .lean<CaseStudy | null>();
 
-    const response = await fetch(
-      `${baseUrl}/api/case-studies/${encodeURIComponent(slug)}`,
-      {
-        cache: 'no-store', // Ensure fresh data
-      }
-    );
-    
-    if (!response.ok) {
+    if (!caseStudy) {
       return null;
     }
-    
-    const data = await response.json();
-    return data.caseStudy;
+
+    const serializedCaseStudy = JSON.parse(
+      JSON.stringify(caseStudy)
+    ) as CaseStudy;
+
+    return serializedCaseStudy;
   } catch (error) {
     console.error('Error fetching case study:', error);
     return null;
