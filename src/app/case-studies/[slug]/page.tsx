@@ -12,8 +12,21 @@ interface CaseStudyPageProps {
 
 async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
   try {
+    const envUrl = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.VERCEL_URL;
+    const baseUrl = envUrl
+      ? envUrl.startsWith('http')
+        ? envUrl
+        : `https://${envUrl}`
+      : process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : undefined;
+
+    if (!baseUrl) {
+      throw new Error('Unable to resolve base URL for case study request');
+    }
+
     const response = await fetch(
-      `/api/case-studies/${encodeURIComponent(slug)}`,
+      `${baseUrl}/api/case-studies/${encodeURIComponent(slug)}`,
       {
         cache: 'no-store', // Ensure fresh data
       }

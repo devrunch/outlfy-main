@@ -190,12 +190,12 @@ const CaseStudyList = ({ onSelect, onDelete, refreshTrigger }) => {
                   <td>
                     <div className="d-flex flex-column gap-1">
                       <Badge 
-                        bg={cs.published ? "success" : "secondary"} 
+                        bg={cs.status === "published" ? "success" : "secondary"} 
                         className="rounded-pill cursor-pointer"
                         onClick={() => toggleStatus(cs._id, "published")}
                         style={{ cursor: "pointer" }}
                       >
-                        {cs.published ? "Published" : "Draft"}
+                        {cs.status === "published" ? "Published" : "Draft"}
                       </Badge>
                       {cs.featured && (
                         <Badge 
