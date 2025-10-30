@@ -185,6 +185,7 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
   const [newTechnology, setNewTechnology] = useState({ name: "", category: "frontend", icon: "", url: "" });
   const [newMetric, setNewMetric] = useState({ label: "", value: "", description: "" });
   const [imageUploading, setImageUploading] = useState(false);
+  const [clientLogoUploading, setClientLogoUploading] = useState(false);
   
   // Validation state
   const [errors, setErrors] = useState({});
@@ -367,6 +368,87 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
       setMessage({ type: "danger", text: "Error uploading image." });
       setImageUploading(false);
     }
+  };
+
+  const handleClientLogoUpload = (e) => {
+    const input = e.target;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setMessage({ type: "danger", text: "Please select a valid image file for the client logo." });
+      input.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage({ type: "danger", text: "Client logo size should be less than 5MB." });
+      input.value = "";
+      return;
+    }
+
+    setClientLogoUploading(true);
+
+    try {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = typeof reader.result === 'string' ? reader.result : '';
+        if (!base64String) {
+          setMessage({ type: "danger", text: "Error processing client logo." });
+          setClientLogoUploading(false);
+          return;
+        }
+
+        setForm((prev) => ({
+          ...prev,
+          clientLogo: base64String,
+        }));
+
+        setTouched((prev) => ({ ...prev, clientLogo: true }));
+
+        const error = validateField('clientLogo', base64String);
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          if (error) {
+            newErrors.clientLogo = error;
+          } else {
+            delete newErrors.clientLogo;
+          }
+          return newErrors;
+        });
+
+        setMessage({ type: "success", text: "Client logo uploaded successfully!" });
+        input.value = "";
+        setClientLogoUploading(false);
+      };
+
+      reader.onerror = () => {
+        setMessage({ type: "danger", text: "Error reading the client logo file." });
+        input.value = "";
+        setClientLogoUploading(false);
+      };
+
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error uploading client logo:', error);
+      setMessage({ type: "danger", text: "Error uploading client logo." });
+      input.value = "";
+      setClientLogoUploading(false);
+    }
+  };
+
+  const removeClientLogo = () => {
+    setForm((prev) => ({
+      ...prev,
+      clientLogo: "",
+    }));
+    setTouched((prev) => ({ ...prev, clientLogo: true }));
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors.clientLogo;
+      return newErrors;
+    });
+    setMessage({ type: "success", text: "Client logo removed successfully!" });
   };
 
   const removeImage = () => {
@@ -867,16 +949,62 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
                 />
               </Col>
               <Col md={3}>
-                <ValidatedFormControl
-                  name="clientLogo"
-                  label="Client Logo URL"
-                  value={form.clientLogo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.clientLogo}
-                  touched={touched.clientLogo}
-                  placeholder="Logo URL"
-                />
+                <Form.Group className="mb-3">
+                  <Form.Label>Client Logo</Form.Label>
+
+                  {form.clientLogo && (
+                    <div className="border rounded p-2 mb-2 text-center">
+                      <img
+                        src={form.clientLogo}
+                        alt="Client logo preview"
+                        style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'contain' }}
+                      />
+                      <div className="mt-2">
+                        <Button variant="outline-danger" size="sm" onClick={removeClientLogo}>
+                          <i className="fas fa-trash me-1"></i>
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="input-group mb-2">
+                    <input
+                      type="file"
+                      className="form-control"
+                      accept="image/*"
+                      onChange={handleClientLogoUpload}
+                      disabled={clientLogoUploading}
+                    />
+                    <span className="input-group-text">
+                      {clientLogoUploading ? (
+                        <i className="fas fa-spinner fa-spin"></i>
+                      ) : (
+                        <i className="fas fa-upload"></i>
+                      )}
+                    </span>
+                  </div>
+                  <Form.Text className="text-muted d-block mb-2">
+                    Upload an image to store the logo as a Base64 string, or paste a URL/Base64 value below.
+                  </Form.Text>
+
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    name="clientLogo"
+                    value={form.clientLogo}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    isInvalid={touched.clientLogo && !!errors.clientLogo}
+                    isValid={touched.clientLogo && !errors.clientLogo && !!form.clientLogo}
+                    placeholder="Logo URL or Base64 string"
+                  />
+                  {touched.clientLogo && errors.clientLogo && (
+                    <Form.Control.Feedback type="invalid">
+                      {errors.clientLogo}
+                    </Form.Control.Feedback>
+                  )}
+                </Form.Group>
               </Col>
               <Col md={3}>
                 <ValidatedFormControl

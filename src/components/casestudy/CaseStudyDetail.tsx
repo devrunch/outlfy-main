@@ -89,8 +89,8 @@ const CaseStudyDetail: React.FC<CaseStudyDetailProps> = ({ caseStudy }) => {
                   <div className="blog__detail-meta">
                     <Image
                       priority
-                      style={{ width: "auto", height: "auto" }}
-                      src={caseStudy.author?.avatar || '/assets/imgs/blog/detail/author.png'}
+                      style={{ width: "100px", height: "auto" }}
+                      src={caseStudy.clientLogo || '/assets/imgs/blog/detail/author.png'}
                       alt={caseStudy.author?.name || 'Author Picture'}
                       width={50}
                       height={50}

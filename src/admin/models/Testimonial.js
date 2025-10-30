@@ -102,10 +102,9 @@ const TestimonialSchema = new Schema(
       validate: {
         validator: function(v) {
           if (!v) return true; // Optional field
-          // Support YouTube embed URLs
-          return /^https?:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]{11}(\?.*)?$/.test(v);
+          return /^https?:\/\/.+/.test(v);
         },
-        message: 'Video URL must be a YouTube embed URL (https://youtube.com/embed/VIDEO_ID)'
+        message: 'Please provide a valid video URL starting with http:// or https://'
       }
     },
     
@@ -167,12 +166,55 @@ TestimonialSchema.pre('save', function(next) {
 
 const Testimonial = mongoose.models.Testimonial || mongoose.model('Testimonial', TestimonialSchema);
 
+const normalizeVideoUrl = (url) => {
+  if (!url || typeof url !== 'string') return url;
+  const trimmed = url.trim();
+  if (!trimmed) return trimmed;
+
+  try {
+    const parsed = new URL(trimmed);
+    const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+
+    if (host === 'youtu.be') {
+      const videoId = parsed.pathname.replace('/', '');
+      if (videoId) {
+        const params = parsed.searchParams.toString();
+        return `https://www.youtube.com/embed/${videoId}${params ? `?${params}` : ''}`;
+      }
+    }
+
+    if (host === 'youtube.com' || host === 'm.youtube.com') {
+      if (parsed.pathname === '/watch') {
+        const videoId = parsed.searchParams.get('v');
+        if (videoId) {
+          parsed.searchParams.delete('v');
+          const remaining = parsed.searchParams.toString();
+          return `https://www.youtube.com/embed/${videoId}${remaining ? `?${remaining}` : ''}`;
+        }
+      }
+
+      if (parsed.pathname.startsWith('/embed/')) {
+        return trimmed;
+      }
+    }
+
+    return trimmed;
+  } catch (error) {
+    return trimmed;
+  }
+};
+
 // CRUD Functions
 
 // CREATE - Add new testimonial
 export const createTestimonial = async (testimonialData) => {
   try {
-    const testimonial = new Testimonial(testimonialData);
+    const payload = { ...testimonialData };
+    if (payload.videoUrl) {
+      payload.videoUrl = normalizeVideoUrl(payload.videoUrl);
+    }
+
+    const testimonial = new Testimonial(payload);
     const savedTestimonial = await testimonial.save();
     return {
       success: true,
@@ -281,6 +323,10 @@ export const updateTestimonial = async (id, updateData) => {
     // Separate fields to update and fields to unset
     const updateFields = { ...updateData };
     const unsetFields = {};
+
+    if (typeof updateFields.videoUrl === 'string' && updateFields.videoUrl.trim()) {
+      updateFields.videoUrl = normalizeVideoUrl(updateFields.videoUrl);
+    }
 
     // Check for empty optional fields and move them to unset
     if (updateFields.linkedinUrl === '' || updateFields.linkedinUrl === null || updateFields.linkedinUrl === undefined) {

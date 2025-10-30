@@ -4,11 +4,12 @@
   border-radius: 8px;
   padding: 24px;
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   position: relative;
   transition: all 0.3s ease;
+  box-shadow: 1px 1px 2px 0px rgba(208, 208, 208, 0.477);
 }
 
 .testimonial-card:hover .testimonial-card__social {
@@ -32,70 +33,7 @@
 
 /* Content Styles */
 .testimonial-card__content {
-    overflow-y: auto;
-    margin-bottom: 20px;
-    padding-right: 8px;
-    position: relative;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-.testimonial-card--featured .testimonial-card__content {
-  color: white;
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-}
-
-.testimonial-card--regular .testimonial-card__content {
-  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-}
-
-.testimonial-card--featured .testimonial-card__content::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 8px;
-  height: 40px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(31, 41, 51, 0.8) 100%);
-  pointer-events: none;
-  opacity: 1;
-}
-
-.testimonial-card--regular .testimonial-card__content::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 8px;
-  height: 30px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.9) 100%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.testimonial-card--regular .testimonial-card__content:hover::after {
-  opacity: 1;
-}
-
-.testimonial-card__content::-webkit-scrollbar {
-  width: 4px;
-}
-
-.testimonial-card--featured .testimonial-card__content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.testimonial-card--featured .testimonial-card__content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-.testimonial-card--regular .testimonial-card__content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  margin-bottom: 20px;
 }
 
 .testimonial-card__text {
@@ -124,7 +62,7 @@
 /* Video Styles */
 .testimonial-card__video-iframe {
   width: 100%;
-  height: 250px;
+  height: 210px;
   border-radius: 8px;
 }
 

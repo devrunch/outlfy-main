@@ -23,9 +23,43 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
-  testimonial,
-  showVideo = false 
+  testimonial
 }) => {
+  const normalizeVideoUrl = (url?: string) => {
+    if (!url) return undefined;
+    try {
+      const parsed = new URL(url);
+      const host = parsed.hostname.replace('www.', '').toLowerCase();
+
+      if (host === 'youtu.be') {
+        const videoId = parsed.pathname.replace('/', '');
+        if (videoId) {
+          const params = parsed.searchParams.toString();
+          return `https://www.youtube.com/embed/${videoId}${params ? `?${params}` : ''}`;
+        }
+      }
+
+      if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'www.youtube.com') {
+        if (parsed.pathname === '/watch') {
+          const videoId = parsed.searchParams.get('v');
+          if (videoId) {
+            parsed.searchParams.delete('v');
+            const remaining = parsed.searchParams.toString();
+            return `https://www.youtube.com/embed/${videoId}${remaining ? `?${remaining}` : ''}`;
+          }
+        }
+
+        if (parsed.pathname.startsWith('/embed/')) {
+          return url;
+        }
+      }
+
+      return url;
+    } catch (error) {
+      return url;
+    }
+  };
+
   // Default testimonial for when no data is provided
   const defaultTestimonial = {
     _id: 'default',
@@ -53,10 +87,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <div className="testimonial-card testimonial-card--featured">
         
           {/* Video if exists */}
-          {data.videoUrl && (
+          {normalizeVideoUrl(data.videoUrl) && (
             <div className="testimonial-card__video">
               <iframe
-                src={data.videoUrl}
+                src={normalizeVideoUrl(data.videoUrl)}
                 title="Video Testimonial"
                 allowFullScreen
                 className="testimonial-card__video-iframe"
@@ -128,10 +162,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <div className="testimonial-card testimonial-card--regular">
       
           {/* Video if exists */}
-          {data.videoUrl && (
+          {normalizeVideoUrl(data.videoUrl) && (
             <div className="testimonial-card__video">
               <iframe
-                src={data.videoUrl}
+                src={normalizeVideoUrl(data.videoUrl)}
                 title="Video Testimonial"
                 frameBorder="0"
                 allowFullScreen

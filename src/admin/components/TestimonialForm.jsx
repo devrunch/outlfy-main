@@ -118,8 +118,8 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
     if (formData.companySiteUrl && formData.companySiteUrl.trim() && !/^https?:\/\/.+\..+/.test(formData.companySiteUrl)) {
       newErrors.companySiteUrl = 'Please enter a valid website URL';
     }
-    if (formData.videoUrl && formData.videoUrl.trim() && !/^https?:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]{11}(\?.*)?$/.test(formData.videoUrl)) {
-      newErrors.videoUrl = 'Please enter a valid YouTube embed URL (https://youtube.com/embed/VIDEO_ID)';
+    if (formData.videoUrl && formData.videoUrl.trim() && !/^https?:\/\/.+/.test(formData.videoUrl)) {
+      newErrors.videoUrl = 'Please enter a valid video URL starting with http:// or https://';
     }
 
     // Length validations
@@ -290,17 +290,17 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
         </div>
 
         <div className="col-12">
-          <label className="form-label">YouTube Video URL (Optional)</label>
+          <label className="form-label">Video URL (Optional)</label>
           <input
             type="url"
             name="videoUrl"
             value={formData.videoUrl}
             onChange={handleInputChange}
             className={`form-control ${errors.videoUrl ? 'is-invalid' : ''}`}
-            placeholder="https://youtube.com/embed/VIDEO_ID"
+            placeholder="https://youtu.be/VIDEO_ID or https://vimeo.com/..."
           />
           {errors.videoUrl && <div className="invalid-feedback">{errors.videoUrl}</div>}
-          <div className="form-text">Enter YouTube embed URL for video testimonial</div>
+          <div className="form-text">Provide any valid video link starting with http:// or https://</div>
         </div>
 
         {/* Settings */}
