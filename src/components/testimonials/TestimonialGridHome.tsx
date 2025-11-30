@@ -4,7 +4,7 @@ import { getFeaturedTestimonials } from "@/admin/models/Testimonial";
 import TestimonialCard from "./TestimonialCard";
 import TestimonialHero from "./TestimonialHero";
 
-interface Testimonial {
+export interface Testimonial {
   _id: string;
   name: string;
   position: string;
@@ -88,14 +88,24 @@ const fetchFeaturedTestimonials = async (): Promise<Testimonial[] | null> => {
   }
 };
 
-const TestimonialGridHome = async () => {
-  const testimonials = await fetchFeaturedTestimonials();
+interface TestimonialGridHomeProps {
+  testimonials?: Testimonial[] | null;
+}
+
+const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }: TestimonialGridHomeProps = {}) => {
+  const provided = Array.isArray(initialTestimonials) ? initialTestimonials.slice(0, 3) : null;
+  const testimonials = provided ?? (await fetchFeaturedTestimonials());
 
   if (!testimonials) {
     return null;
   }
 
-  const testimonialCount = testimonials.length;
+  const trimmed = testimonials.slice(0, 3);
+  if (!trimmed.length) {
+    return null;
+  }
+
+  const testimonialCount = trimmed.length;
   const isCentered = testimonialCount < 3;
 
   return (
@@ -169,7 +179,7 @@ const TestimonialGridHome = async () => {
 
         <div className="container mt-60 mb-5">
           <div className={`testimonial-bento-grid${isCentered ? ' centered' : ''}`}>
-            {testimonials.map((item) => (
+            {trimmed.map((item) => (
               <div
                 key={item._id}
                 className={`testimonial-bento-item${item.videoUrl ? " rowspan-2" : ""}`}
@@ -185,3 +195,4 @@ const TestimonialGridHome = async () => {
 };
 
 export default TestimonialGridHome;
+export type { TestimonialGridHomeProps };

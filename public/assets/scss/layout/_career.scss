@@ -14,7 +14,7 @@
     }
 
     &-title {
-      background-color: var(--black-2);
+      background-color: var(--white-2);
       padding-bottom: 500px;
 
       @media #{$lg} {
@@ -48,7 +48,7 @@
     }
 
     .sec-title-2 {
-      color: var(--white);
+      color: var(--black);
 
       @media #{$sm} {
         margin-bottom: 50px;

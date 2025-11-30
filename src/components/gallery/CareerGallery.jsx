@@ -1,10 +1,37 @@
-import Career2 from "../../../public/assets/imgs/career/2.jpg";
-import Career3 from "../../../public/assets/imgs/career/3.jpg";
-import Career4 from "../../../public/assets/imgs/career/4.jpg";
-import Career5 from "../../../public/assets/imgs/career/5.jpg";
 import Image from "next/image";
 
 const CareerGallery = () => {
+  const galleryImages = {
+    primary: {
+      src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80",
+      alt: "Team strategizing together in a modern office",
+      width: 600,
+      height: 900,
+      credit: "Unsplash – @brookecagle",
+    },
+    feature: {
+      src: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1200&q=80",
+      alt: "Diverse teammates uniting hands in the office",
+      width: 1200,
+      height: 1600,
+      credit: "Unsplash – @krakenimages",
+    },
+    stackedTop: {
+      src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+      alt: "Colleagues collaborating around laptops",
+      width: 800,
+      height: 600,
+      credit: "Unsplash – @kmuza",
+    },
+    stackedBottom: {
+      src: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80",
+      alt: "Career growth conversation in bright workspace",
+      width: 1200,
+      height: 900,
+      credit: "Unsplash – @protohaus",
+    },
+  };
+
   return (
     <>
       <section className="career__gallery">
@@ -32,10 +59,11 @@ const CareerGallery = () => {
               <div className="career__gallery-img">
                 <Image
                   priority
-                  width={300}
+                  width={320}
+                  height={480}
                   style={{ height: "auto" }}
-                  src={Career2}
-                  alt="Image"
+                  src={galleryImages.primary.src}
+                  alt={galleryImages.primary.alt}
                 />
               </div>
             </div>
@@ -43,10 +71,11 @@ const CareerGallery = () => {
               <div className="career__gallery-img img-anim">
                 <Image
                   priority
-                  width={520}
+                  width={640}
+                  height={850}
                   style={{ height: "auto" }}
-                  src={Career3}
-                  alt="Image"
+                  src={galleryImages.feature.src}
+                  alt={galleryImages.feature.alt}
                   data-speed="auto"
                 />
               </div>
@@ -55,17 +84,19 @@ const CareerGallery = () => {
               <div className="career__gallery-img">
                 <Image
                   priority
-                  width={230}
+                  width={360}
+                  height={270}
                   style={{ height: "auto" }}
-                  src={Career4}
-                  alt="Image"
+                  src={galleryImages.stackedTop.src}
+                  alt={galleryImages.stackedTop.alt}
                 />
                 <Image
                   priority
-                  width={410}
+                  width={480}
+                  height={360}
                   style={{ height: "auto" }}
-                  src={Career5}
-                  alt="Image"
+                  src={galleryImages.stackedBottom.src}
+                  alt={galleryImages.stackedBottom.alt}
                 />
               </div>
             </div>

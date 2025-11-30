@@ -59,12 +59,66 @@ const TestimonialSchema = new Schema(
       maxlength: 2000,
       validate: {
         validator: function(v) {
-          // Allow only basic HTML tags for rich text formatting
-          const allowedTags = /<\/?(?:b|strong|i|em|u|br|p|span)(?:\s[^>]*)?>|&(?:amp|lt|gt|quot|#39);/gi;
+          if (typeof v !== 'string') {
+            return false;
+          }
+
+          // Allow basic formatting tags plus inline images with a safe attribute set
+          const allowedTags = /<\/?(?:b|strong|i|em|u|br|p|span)(?:\s[^>]*)?>|<img(?:\s+[^>]*?)?\/?\s*>|&(?:amp|lt|gt|quot|#39);/gi;
           const stripped = v.replace(allowedTags, '');
-          return !/<[^>]*>/g.test(stripped); // No other HTML tags allowed
+          if (/<[^>]*>/g.test(stripped)) {
+            return false; // Unrecognised tags remain
+          }
+
+          const imgTags = v.match(/<img\s+[^>]*?>/gi) || [];
+          if (imgTags.length === 0) {
+            return true;
+          }
+
+          const allowedImgAttrs = new Set(['src', 'alt', 'title', 'width', 'height', 'loading', 'class']);
+          const allowedLoadingValues = new Set(['lazy', 'eager', 'auto']);
+          const srcPattern = /^(?:data:image\/(?:jpeg|jpg|png|webp|gif);base64,[a-z0-9+/=]+|https?:\/\/[\w\-._~:/?#\[\]@!$&'()*+,;=%]+)$/i;
+
+          return imgTags.every((tag) => {
+            const attrMatch = tag.match(/<img\s+([^>]*?)\/?\s*>/i);
+            const attrString = attrMatch ? attrMatch[1] : '';
+            let remaining = attrString.trim();
+
+            const attrRegex = /([a-zA-Z0-9:-]+)\s*=\s*("([^"]*)"|'([^']*)')/g;
+            let srcFound = false;
+            let match;
+
+            while ((match = attrRegex.exec(attrString)) !== null) {
+              const fullMatch = match[0];
+              const name = match[1] ? match[1].toLowerCase() : '';
+              const value = match[3] !== undefined ? match[3] : match[4] !== undefined ? match[4] : '';
+
+              if (!allowedImgAttrs.has(name)) {
+                return false;
+              }
+
+              if (name === 'src') {
+                srcFound = true;
+                if (!srcPattern.test(value)) {
+                  return false;
+                }
+              }
+
+              if (name === 'loading' && value && !allowedLoadingValues.has(value.toLowerCase())) {
+                return false;
+              }
+
+              remaining = remaining.replace(fullMatch, '').trim();
+            }
+
+            if (!srcFound) {
+              return false;
+            }
+
+            return remaining === '';
+          });
         },
-        message: 'Testimonial contains invalid HTML. Only basic formatting tags (b, strong, i, em, u, br, p, span) are allowed'
+        message: 'Testimonial contains invalid HTML. Only basic formatting tags (b, strong, i, em, u, br, p, span) and safe <img> tags are allowed'
       }
     },
     
@@ -411,10 +465,13 @@ export const deleteTestimonial = async (id) => {
 // FEATURED - Get featured testimonials
 export const getFeaturedTestimonials = async () => {
   try {
+
+    console.log('Fetching featured testimonials...');
     const testimonials = await Testimonial
       .find({ status: 'approved', featured: true })
       .sort({ displayOrder: 1, createdAt: -1 });
 
+    console.log('Featured testimonials fetched:', testimonials.length);
     return {
       success: true,
       data: testimonials,

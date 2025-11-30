@@ -13,33 +13,115 @@ import DigitalMarketingBrand from "@/components/brand/DigitalMarketingBrand";
 import DigitalMarketingAbout from "@/components/about/DigitalMarketingAbout";
 import DigitalMarketingService from "@/components/service/DigitalMarketingService";
 import DigitalMarketingWorkflow from "@/components/workflow/DigitalMarketingWorkflow";
-import TestimonialGrid from '@/components/testimonials/TestimonialGridHome';
+import TestimonialGrid, { type Testimonial as FeaturedTestimonial } from '@/components/testimonials/TestimonialGridHome';
 
-async function hasFeaturedTestimonials(): Promise<boolean> {
+// Helper to convert Mongoose document to plain object
+const toPlainObject = (doc: unknown) => {
+  if (doc && typeof doc === 'object' && typeof (doc as any).toObject === 'function') {
+    return (doc as { toObject: (options?: Record<string, unknown>) => unknown }).toObject({ getters: true, virtuals: false });
+  }
+
+  return JSON.parse(JSON.stringify(doc ?? {}));
+};
+
+const normalizeFeaturedTestimonials = (items: unknown[]): FeaturedTestimonial[] => {
+  return items.map((item, index) => {
+    const plain = toPlainObject(item) as Record<string, any>;
+    const createdAt = plain.createdAt instanceof Date
+      ? plain.createdAt.toISOString()
+      : typeof plain.createdAt === 'string'
+        ? plain.createdAt
+        : new Date().toISOString();
+
+    return {
+      _id: typeof plain._id === 'string' ? plain._id : plain._id?.toString?.() ?? `testimonial-${index}`,
+      name: typeof plain.name === 'string' ? plain.name : '',
+      position: typeof plain.position === 'string' ? plain.position : '',
+      company: typeof plain.company === 'string' ? plain.company : '',
+      testimonial: typeof plain.testimonial === 'string' ? plain.testimonial : '',
+      profilePicture: typeof plain.profilePicture === 'string' ? plain.profilePicture : '',
+      companyLogo: typeof plain.companyLogo === 'string' ? plain.companyLogo : '',
+      linkedinUrl: typeof plain.linkedinUrl === 'string' ? plain.linkedinUrl : '',
+      companySiteUrl: typeof plain.companySiteUrl === 'string' ? plain.companySiteUrl : '',
+      videoUrl: typeof plain.videoUrl === 'string' ? plain.videoUrl : undefined,
+      projectType: typeof plain.projectType === 'string' ? plain.projectType : '',
+      status: typeof plain.status === 'string' ? plain.status : '',
+      featured: true,
+      displayOrder: typeof plain.displayOrder === 'number' ? plain.displayOrder : index,
+      createdAt,
+    } satisfies FeaturedTestimonial;
+  });
+};
+
+// Safe server-side fetch for featured testimonials with a short timeout.
+// Uses Promise.race to avoid blocking page render when the DB is slow or unreachable.
+async function fetchFeaturedTestimonialsWithTimeout(timeout = 10000): Promise<FeaturedTestimonial[] | null> {
+  let didTimeout = false;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
   try {
-    await connectDB();
-    const result = await getFeaturedTestimonials();
+    const operation = (async () => {
+      await connectDB();
+      const result = await getFeaturedTestimonials();
 
-    if (!result?.success || !Array.isArray(result.data)) {
-      return false;
+      if (!result?.success || !Array.isArray(result.data)) {
+        console.warn('fetchFeaturedTestimonialsWithTimeout: unexpected response shape', result?.error);
+        return null;
+      }
+
+      if (result.data.length === 0) {
+        console.warn('fetchFeaturedTestimonialsWithTimeout: no featured testimonials found');
+        return null;
+      }
+
+      const trimmed = result.data.slice(0, 3);
+      return normalizeFeaturedTestimonials(trimmed);
+    })().catch((err) => {
+      console.error('fetchFeaturedTestimonialsWithTimeout: DB query failed', err);
+      return null;
+    });
+
+    const timed = await Promise.race<FeaturedTestimonial[] | null>([
+      operation,
+      new Promise<null>((resolve) => {
+        timeoutId = setTimeout(() => {
+          didTimeout = true;
+          console.warn(`fetchFeaturedTestimonialsWithTimeout: timed out after ${timeout}ms`);
+          resolve(null);
+        }, timeout);
+      }),
+    ]);
+
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
     }
 
-    return result.data.length > 0;
+    if (didTimeout) {
+      return null;
+    }
+
+    return timed && timed.length ? timed : null;
   } catch (error) {
-    console.error('Error checking featured testimonials:', error);
-    return false;
+    console.error('Error fetching featured testimonials:', error);
+    return null;
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   }
 }
 
 export default async function DigitalMarketing() {
-  const showTestimonials = await hasFeaturedTestimonials();
+  // Run a guarded fetch — if it times out we render the page without testimonials.
+  const featuredTestimonials = await fetchFeaturedTestimonialsWithTimeout(10000);
 
   return (
     <main suppressHydrationWarning>
       <RootLayout header="header1" footer="footer1">
         <DigitalMarketingHero />
         <DigitalMarketingBrand />
-        {showTestimonials && <TestimonialGrid />}
+        {featuredTestimonials && <TestimonialGrid testimonials={featuredTestimonials} />}
         <DigitalMarketingAbout />
         <DigitalMarketingService />
         {/* <DigitalMarketingProtfolio /> */}

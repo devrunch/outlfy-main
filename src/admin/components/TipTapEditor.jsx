@@ -17,7 +17,7 @@ import Youtube from '@tiptap/extension-youtube';
 import Color from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import { Button, ButtonGroup, Form, Modal } from 'react-bootstrap';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 // Create lowlight instance with common languages (37 languages including JS, TS, CSS, HTML, Python, etc.)
 const lowlight = createLowlight(common);
@@ -30,7 +30,10 @@ const TipTapEditor = ({ content, onChange, placeholder = "Start writing..." }) =
   const [linkText, setLinkText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [imageAlt, setImageAlt] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
+  const [imageUploadError, setImageUploadError] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
+  const imageFileInputRef = useRef(null);
 
   const editor = useEditor({
     extensions: [
@@ -106,14 +109,54 @@ const TipTapEditor = ({ content, onChange, placeholder = "Start writing..." }) =
     setLinkText('');
   }, [editor, linkUrl, linkText]);
 
-  const addImage = useCallback(() => {
-    if (imageUrl) {
-      editor.chain().focus().setImage({ src: imageUrl, alt: imageAlt }).run();
-    }
+  const resetImageModalState = useCallback(() => {
     setShowImageModal(false);
     setImageUrl('');
     setImageAlt('');
-  }, [editor, imageUrl, imageAlt]);
+    setImagePreview('');
+    setImageUploadError('');
+    if (imageFileInputRef.current) {
+      imageFileInputRef.current.value = '';
+    }
+  }, []);
+
+  const addImage = useCallback(() => {
+    if (!imageUrl) {
+      setImageUploadError('Please provide an image URL or upload a file.');
+      return;
+    }
+
+    editor.chain().focus().setImage({ src: imageUrl, alt: imageAlt }).run();
+    resetImageModalState();
+  }, [editor, imageUrl, imageAlt, resetImageModalState]);
+
+  const handleImageFileChange = useCallback((event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      setImageUploadError('Unsupported file type. Please select a JPG, PNG, WEBP, or GIF image.');
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      setImageUploadError('Image is too large. Please choose a file under 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = typeof reader.result === 'string' ? reader.result : '';
+      setImageUrl(base64);
+      setImagePreview(base64);
+      setImageUploadError('');
+    };
+    reader.readAsDataURL(file);
+  }, []);
 
   const addYoutube = useCallback(() => {
     if (youtubeUrl) {
@@ -360,11 +403,30 @@ const TipTapEditor = ({ content, onChange, placeholder = "Start writing..." }) =
       </Modal>
 
       {/* Image Modal */}
-      <Modal show={showImageModal} onHide={() => setShowImageModal(false)}>
+      <Modal show={showImageModal} onHide={resetImageModalState}>
         <Modal.Header closeButton>
           <Modal.Title>Add Image</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label>Upload Image</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+              ref={imageFileInputRef}
+              onChange={handleImageFileChange}
+            />
+            <Form.Text className="text-muted">Supports JPG, PNG, WEBP, or GIF files up to 5MB.</Form.Text>
+          </Form.Group>
+          {imagePreview && (
+            <div className="mb-3 text-center">
+              <img
+                src={imagePreview}
+                alt="Uploaded preview"
+                style={{ maxWidth: '100%', borderRadius: '8px' }}
+              />
+            </div>
+          )}
           <Form.Group className="mb-3">
             <Form.Label>Image URL</Form.Label>
             <Form.Control
@@ -383,9 +445,12 @@ const TipTapEditor = ({ content, onChange, placeholder = "Start writing..." }) =
               placeholder="Description of the image"
             />
           </Form.Group>
+          {imageUploadError && (
+            <div className="text-danger mt-2">{imageUploadError}</div>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowImageModal(false)}>
+          <Button variant="secondary" onClick={resetImageModalState}>
             Cancel
           </Button>
           <Button variant="primary" onClick={addImage}>

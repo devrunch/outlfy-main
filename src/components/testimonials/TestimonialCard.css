@@ -42,6 +42,14 @@
   line-height: 1.6;
 }
 
+.testimonial-card__text img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px 0;
+  border-radius: 8px;
+}
+
 .testimonial-card--featured .testimonial-card__text span {
   color: white !important;
 }

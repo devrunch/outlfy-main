@@ -38,37 +38,37 @@ const DigitalMarketingHero = () => {
         let HomeDigital = gsap.timeline();
 
         HomeDigital.from(split_creatives.chars, {
-          duration: 2,
+          duration: 0.5,
           x: 100,
           autoAlpha: 0,
           stagger: 0.2,
         });
         HomeDigital.from(
           split_solutions.chars,
-          { duration: 1, x: 100, autoAlpha: 0, stagger: 0.1 },
+          { duration: 0.25, x: 100, autoAlpha: 0, stagger: 0.1 },
           "-=1"
         );
         HomeDigital.from(
           split_text_animation.words,
-          { duration: 1, x: 50, autoAlpha: 0, stagger: 0.05 },
+          { duration: 0.25, x: 50, autoAlpha: 0, stagger: 0.05 },
           "-=1"
         );
 
         HomeDigital.from(
           split_text_animation2.words,
-          { duration: 1, x: 50, autoAlpha: 0, stagger: 0.05 },
+          { duration: 0.25, x: 50, autoAlpha: 0, stagger: 0.05 },
           "-=1"
         );
 
         // Add fade-in animation for buttons
         HomeDigital.to(
           buttonAmin1.current,
-          { duration: 1, opacity: 1, y: 0, ease: "power2.out" },
+          { duration: 0.25, opacity: 1, y: 0, ease: "power2.out" },
           "-=0.5"
         );
         HomeDigital.to(
           buttonAmin2.current,
-          { duration: 1, opacity: 1, y: 0, ease: "power2.out" },
+          { duration: 0.25, opacity: 1, y: 0, ease: "power2.out" },
           "-=0.8"
         );
       });
