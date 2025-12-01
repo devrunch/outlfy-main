@@ -41,6 +41,12 @@
       "sub_nav": []
     },
     {
+      "nav_name": "Career",
+      "link": "/career",
+      "type": "",
+      "sub_nav": []
+    },
+    {
       "nav_name": "Contact",
       "link": "/contact",
       "type": "",

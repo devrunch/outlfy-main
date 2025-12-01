@@ -185,6 +185,9 @@ export default function Footer1() {
                       <Link href="/contact">contact</Link>
                     </li>
                     <li>
+                      <Link href="/career">career</Link>
+                    </li>
+                    <li>
                       <Link href="/privacy">privacy policy</Link>
                     </li>
                     <li>

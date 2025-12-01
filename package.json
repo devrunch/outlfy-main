@@ -51,6 +51,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@types/node": "24.0.1",
+    "@types/nodemailer": "^7.0.4",
     "sass": "^1.60.0"
   }
 }
