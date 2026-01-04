@@ -39,7 +39,7 @@
     "lottie-react": "^2.4.1",
     "lowlight": "^3.3.0",
     "mongoose": "^8.0.3",
-    "next": "^15.3.3",
+    "next": "15.3.8",
     "nodemailer": "^7.0.11",
     "react": "^19.1.0",
     "react-bootstrap": "^2.7.2",
