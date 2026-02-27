@@ -107,7 +107,7 @@ const Contact1 = () => {
                   </li>
                   <li>
                     <span>
-                      Office: 456 Innovation Drive, <br /> San Francisco, CA 94016
+                    VWWW9+W26, Lucknow, Uttar Pradesh, 226013
                     </span>
                   </li>
                   <li>
