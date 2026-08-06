@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/utils/database';
 import { getTestimonials } from '@/admin/models/Testimonial';
 
@@ -12,35 +12,35 @@ export async function GET(request) {
     const projectType = searchParams.get('projectType');
     const featured = searchParams.get('featured');
 
-    // Build filter for approved testimonials only
-    const filter = { status: 'approved' };
-
-    if (projectType && projectType !== 'all') {
-      filter.projectType = projectType;
-    }
-
-    if (featured === 'true') {
-      filter.featured = true;
-    }
-
-    // Get testimonials with pagination
+    // Get testimonials with pagination — only approved testimonials are
+    // ever exposed through this public endpoint.
     const result = await getTestimonials({
-      filter,
+      status: 'approved',
+      ...(projectType && projectType !== 'all' ? { projectType } : {}),
+      ...(featured === 'true' ? { featured: true } : {}),
       page,
       limit,
-      sort: { displayOrder: 1, createdAt: -1 } // Sort by display order first, then newest
+      sortBy: 'displayOrder',
+      sortOrder: 'asc'
     });
+
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, error: result.error || 'Failed to fetch testimonials' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      testimonials: result.testimonials,
+      testimonials: result.data,
       pagination: {
         page,
         limit,
-        totalPages: result.totalPages,
-        total: result.total,
-        hasNextPage: result.hasNextPage,
-        hasPrevPage: result.hasPrevPage
+        total: result.pagination.total,
+        totalPages: result.pagination.pages,
+        hasNextPage: page < result.pagination.pages,
+        hasPrevPage: page > 1
       }
     });
 

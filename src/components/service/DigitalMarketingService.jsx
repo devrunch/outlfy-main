@@ -113,7 +113,7 @@ const DigitalMarketingService = () => {
   const serviceList = useRef();
   useEffect(() => {
     if (typeof window !== "undefined") {
-      imageAnimation(serviceList.current.children);
+      imageAnimation(serviceList.current);
       let tHero = gsap.context(() => {
         let service__items_3 = gsap.utils.toArray(".service_animation");
         let service__items_heading = gsap.utils.toArray(
@@ -165,19 +165,31 @@ const DigitalMarketingService = () => {
     }
   }, []);
 
-  const imageAnimation = (data) => {
-    function followImageCursor(event, serviceImgItem) {
-      const contentBox = serviceImgItem.getBoundingClientRect();
-      const dx = event.clientX - contentBox.x;
-      const dy = event.clientY - contentBox.y;
-      serviceImgItem.children[3].style.transform = `translate(${dx}px, ${dy}px)`;
-    }
+  const imageAnimation = (container) => {
+    const items = container.querySelectorAll(".service_animation");
+    const imgWrap = container.querySelector(".service3__img-wrap");
+    const imgEl = imgWrap?.querySelector(".service3__img");
+    if (!imgWrap || !imgEl) return;
 
-    for (let i = 0; i < data.length; i++) {
-      data[i].addEventListener("mousemove", (event) => {
-        setInterval(followImageCursor(event, data[i]), 1000);
-      });
-    }
+    items.forEach((item, i) => {
+      const handleEnter = () => {
+        imgWrap.style.visibility = "visible";
+        imgEl.style.backgroundImage = `url(${services[i].img})`;
+      };
+      const handleMove = (event) => {
+        const containerBox = container.getBoundingClientRect();
+        const dx = event.clientX - containerBox.left;
+        const dy = event.clientY - containerBox.top;
+        imgWrap.style.transform = `translate(${dx}px, ${dy}px)`;
+      };
+      const handleLeave = () => {
+        imgWrap.style.visibility = "hidden";
+      };
+
+      item.addEventListener("mouseenter", handleEnter);
+      item.addEventListener("mousemove", handleMove);
+      item.addEventListener("mouseleave", handleLeave);
+    });
   };
 
   return (

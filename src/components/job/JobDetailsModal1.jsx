@@ -58,7 +58,14 @@ const JobDetailsModal1 = ({
             <p>90-day remote track</p>
           </div>
           <div className="form-apply">
-            <form action="#" onSubmit={(e) => e.preventDefault()}>
+            <form
+              id="internship-application-form"
+              action="#"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleApplicationSubmit();
+              }}
+            >
               <div className="input-apply-2" style={stackedRowStyle}>
                 <label htmlFor="name" style={labelStyle}>
                   Name *
@@ -224,8 +231,8 @@ const JobDetailsModal1 = ({
 
           <div className="form-btn apply-trigger">
             <button
-              type="button"
-              onClick={handleApplicationSubmit}
+              type="submit"
+              form="internship-application-form"
               className="wc-btn-primary btn-hover"
               disabled={submitStatus.loading}
             >

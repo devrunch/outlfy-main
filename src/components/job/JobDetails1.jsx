@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "@/plugins";
 import JobDetailsModal1 from "./JobDetailsModal1";
+import { useRecaptcha } from "@/lib/hooks/useRecaptcha";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const JobDetails1 = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { execute: executeRecaptcha } = useRecaptcha();
   const initialFormState = {
     whyOutlfy: "",
     founderInsight: "",
@@ -61,12 +63,17 @@ const JobDetails1 = () => {
   const handleApplicationSubmit = async () => {
     setSubmitStatus({ loading: true, error: "", success: false });
     try {
+      const recaptchaToken = await executeRecaptcha("internship_apply");
+      if (!recaptchaToken) {
+        throw new Error("Verification failed. Please refresh the page and try again.");
+      }
+
       const response = await fetch("/api/internship-apply", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
 
       if (!response.ok) {
