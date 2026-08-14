@@ -132,13 +132,15 @@ const DigitalMarketingHero = () => {
               <div className="hero__inner-3" style={{ transition: "opacity 0.5s ease-in-out" }}>
                 <div className="sec-title-wrapper">
                   <h2 className="sec-sub-title">YOUR</h2>
-                  <h3 className="sec-title title-left" ref={titleLeft}>
-                    TECH
-                  </h3>
+                  <div className="sec-title-row">
+                    <h3 className="sec-title title-left" ref={titleLeft}>
+                      TECH
+                    </h3>
 
-                  <h3 className="sec-title-small title-right" ref={titleRight}>
-                    PARTNER
-                  </h3>
+                    <h3 className="sec-title-small title-right" ref={titleRight}>
+                      PARTNER
+                    </h3>
+                  </div>
                 </div>
 
                 <div className="hero__text-3">

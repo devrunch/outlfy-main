@@ -521,6 +521,38 @@
   display: none;
 }
 
+/* The theme's .scroll-top button sits fixed at the same bottom-right corner
+   reCAPTCHA v3 uses for its badge, with a higher z-index (9991) and no
+   z-index of its own on the badge, so the button paints over it once it
+   appears. Push the badge above the button at each of the theme's own
+   .scroll-top breakpoints and give it a z-index high enough to never be
+   buried by other fixed UI. */
+.grecaptcha-badge {
+  bottom: 86px !important;
+  z-index: 9992 !important;
+}
+
+/* $lg: .scroll-top bottom 80px, height 50px -> occupies 80-130px */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .grecaptcha-badge {
+    bottom: 146px !important;
+  }
+}
+
+/* $md: .scroll-top bottom 60px, height 50px -> occupies 60-110px */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .grecaptcha-badge {
+    bottom: 126px !important;
+  }
+}
+
+/* $sm: .scroll-top bottom 55px, height 50px -> occupies 55-105px */
+@media only screen and (max-width: 767px) {
+  .grecaptcha-badge {
+    bottom: 121px !important;
+  }
+}
+
 /* Case Study Specific Styles */
 .case-study-summary {
   background: var(--primary-10);

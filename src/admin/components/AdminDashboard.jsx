@@ -33,7 +33,7 @@ const AdminDashboard = () => {
       setStats({
         caseStudies: Array.isArray(caseStudiesData) ? caseStudiesData.length : 0,
         formSubmissions: formResponsesData.pagination ? formResponsesData.pagination.total : 0,
-        pendingResponses: formResponsesData.responses ? formResponsesData.responses.filter(r => r.status === 'pending').length : 0,
+        pendingResponses: formResponsesData.responses ? formResponsesData.responses.filter(r => r.status === 'new').length : 0,
         featuredProjects: Array.isArray(caseStudiesData) ? caseStudiesData.filter(cs => cs.featured).length : 0
       });
       
@@ -179,8 +179,8 @@ const AdminDashboard = () => {
                       <div className="mt-1">
                         <span className="badge bg-primary rounded-pill">{submission.subject}</span>
                         <span className={`badge ms-2 rounded-pill ${
-                          submission.status === 'pending' ? 'bg-warning' : 
-                          submission.status === 'responded' ? 'bg-success' : 'bg-secondary'
+                          submission.status === 'new' ? 'bg-warning' :
+                          submission.status === 'replied' ? 'bg-success' : 'bg-secondary'
                         }`}>
                           {submission.status}
                         </span>

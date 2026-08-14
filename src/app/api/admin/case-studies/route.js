@@ -17,7 +17,7 @@ export async function GET(request) {
     
     const caseStudies = await CaseStudy.find()
       .sort({ createdAt: -1 })
-      .select('title slug clientName projectType industry status timeline budget createdAt author');
+      .select('title slug clientName projectType industry status published featured timeline budget createdAt author');
       
     return NextResponse.json(caseStudies);
   } catch (error) {

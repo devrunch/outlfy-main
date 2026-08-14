@@ -131,11 +131,9 @@ Add to your `.env.local`:
 
 ```env
 MONGODB_URI=mongodb://localhost:27017/outlfy
-ADMIN_EMAIL=admin@outlfy.com
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
+ADMIN_NOTIFICATION_EMAIL=admin@outlfy.com
+RESEND_API_KEY=your-resend-api-key
+RESEND_FROM_EMAIL=Outlfy Website <onboarding@resend.dev>
 ```
 
 ### 4. API Integration
@@ -160,10 +158,10 @@ export async function POST(request) {
 
 ### 5. Email Notifications (Optional)
 
-Install nodemailer for email notifications:
+Install the Resend SDK for email notifications:
 
 ```bash
-npm install nodemailer
+npm install resend
 ```
 
 ## 🔐 Access Control

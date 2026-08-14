@@ -1,11 +1,13 @@
 "use client"
 import animationCharCome from "@/lib/utils/animationCharCome";
 import animationWordCome from "@/lib/utils/animationWordCome";
+import { useRecaptcha } from "@/lib/hooks/useRecaptcha";
 import { useEffect, useRef, useState } from "react";
 
 const Contact1 = () => {
   const charAnim = useRef();
   const wordAnim = useRef();
+  const { execute: executeRecaptcha } = useRecaptcha();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,7 +37,11 @@ const Contact1 = () => {
     setSubmitMessage("");
 
     try {
-      // TODO: Replace with actual API endpoint
+      const recaptchaToken = await executeRecaptcha("contact_submit");
+      if (!recaptchaToken) {
+        throw new Error("Verification failed. Please refresh the page and try again.");
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -44,7 +50,8 @@ const Contact1 = () => {
         body: JSON.stringify({
           ...formData,
           formType: 'contact',
-          source: window.location.pathname
+          source: window.location.pathname,
+          recaptchaToken
         }),
       });
 
@@ -186,8 +193,8 @@ const Contact1 = () => {
                   <div className="row g-3">
                     <div className="col-12">
                       <div className="btn_wrapper">
-                        <button 
-                          type="submit" 
+                        <button
+                          type="submit"
                           className="wc-btn-primary btn-hover btn-item"
                           disabled={isSubmitting}
                         >

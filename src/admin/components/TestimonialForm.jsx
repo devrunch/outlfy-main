@@ -215,9 +215,17 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
             className={`form-control ${errors.profile ? 'is-invalid' : ''}`}
           />
           {errors.profile && <div className="invalid-feedback">{errors.profile}</div>}
+          <div className="form-text">
+            Recommended: a square photo, at least 300×300px. It renders as a circle on the
+            site, so off-center or non-square photos may get cropped.
+          </div>
           {profilePreview && (
             <div className="mt-2">
-              <img src={profilePreview} alt="Profile preview" style={{width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px'}} />
+              <img
+                src={profilePreview}
+                alt="Profile preview"
+                style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: '50%', border: '1px solid #ddd' }}
+              />
             </div>
           )}
         </div>
@@ -231,9 +239,30 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
             className={`form-control ${errors.logo ? 'is-invalid' : ''}`}
           />
           {errors.logo && <div className="invalid-feedback">{errors.logo}</div>}
+          <div className="form-text">
+            Recommended: a landscape logo (roughly 2:1, e.g. 300×150px) on a transparent
+            background. It displays inside a fixed {"92×44px"} box, so it will be scaled to
+            fit without cropping regardless of the source size.
+          </div>
           {logoPreview && (
             <div className="mt-2">
-              <img src={logoPreview} alt="Logo preview" style={{width: '100px', height: '60px', objectFit: 'contain', border: '1px solid #ddd', borderRadius: '4px'}} />
+              <div
+                style={{
+                  width: '92px',
+                  height: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                }}
+              >
+                <img
+                  src={logoPreview}
+                  alt="Logo preview"
+                  style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto', objectFit: 'contain' }}
+                />
+              </div>
             </div>
           )}
         </div>

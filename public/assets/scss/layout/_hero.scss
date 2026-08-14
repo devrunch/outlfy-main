@@ -256,6 +256,10 @@
         text-transform: uppercase;
         color: var(--black-2);
 
+        @media #{$xxxl} {
+          font-size: 160px;
+        }
+
         @media #{$xxl} {
           font-size: 160px;
         }
@@ -285,6 +289,10 @@
         text-transform: uppercase;
         color: var(--black-2);
 
+        @media #{$xxxl} {
+          font-size: 260px;
+        }
+
         @media #{$xxl} {
           font-size: 260px;
         }
@@ -306,9 +314,12 @@
         }
       }
 
-      .title-right {
-        position: absolute;
-        right: 0;
+      .sec-title-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        column-gap: 20px;
       }
 
 

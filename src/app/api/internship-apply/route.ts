@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+import { verifyRecaptcha } from "@/lib/utils/verifyRecaptcha";
 
 type ApplicationPayload = {
   whyOutlfy: string;
@@ -14,6 +15,7 @@ type ApplicationPayload = {
   phone: string;
   documentLink: string;
   loomLink?: string;
+  recaptchaToken?: string;
 };
 
 const REQUIRED_FIELDS: Array<keyof ApplicationPayload> = [
@@ -30,7 +32,7 @@ const REQUIRED_FIELDS: Array<keyof ApplicationPayload> = [
   "documentLink",
 ];
 
-const REQUIRED_ENV_VARS = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"] as const;
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Outlfy Careers <onboarding@resend.dev>";
 
 const buildHtml = (payload: ApplicationPayload) => `
   <h2>Outlfy Internship Application</h2>
@@ -91,41 +93,47 @@ export async function POST(request: Request) {
 
     const sanitizedPayload = payload as ApplicationPayload;
 
-    const missingEnv = REQUIRED_ENV_VARS.filter((envKey) => !process.env[envKey]);
+    const remoteIp = request.headers.get("x-forwarded-for") || undefined;
+    const recaptchaResult = await verifyRecaptcha(
+      sanitizedPayload.recaptchaToken,
+      remoteIp,
+      "internship_apply"
+    );
+    if (!recaptchaResult.success) {
+      return NextResponse.json(
+        { error: "Captcha verification failed. Please try again." },
+        { status: 400 }
+      );
+    }
 
-    if (missingEnv.length) {
-      console.error("SMTP configuration is incomplete", missingEnv);
+    if (!process.env.RESEND_API_KEY) {
+      console.error("Email configuration is incomplete: missing RESEND_API_KEY");
       return NextResponse.json(
         { error: "Email configuration is missing on the server." },
         { status: 500 }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE !== "false" : true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const envRecipients = process.env.APPLICATION_TARGET_EMAIL
       ?.split(",")
       .map((email) => email.trim())
       .filter(Boolean);
     const toAddress = envRecipients && envRecipients.length ? envRecipients : "info@outlfy.com";
-    const fromAddress = process.env.SMTP_FROM || (process.env.SMTP_USER as string);
 
-    await transporter.sendMail({
-      from: `Outlfy Careers <${fromAddress}>`,
+    const { error } = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
       to: toAddress,
       replyTo: sanitizedPayload.email,
       subject: `New Internship Application - ${sanitizedPayload.name}`,
       text: buildText(sanitizedPayload),
       html: buildHtml(sanitizedPayload),
     });
+
+    if (error) {
+      throw new Error(error.message || "Failed to send email via Resend");
+    }
 
     return NextResponse.json({ message: "Application sent successfully." });
   } catch (error) {

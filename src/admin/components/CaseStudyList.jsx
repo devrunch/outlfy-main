@@ -54,6 +54,35 @@ const CaseStudyList = ({ onSelect, onDelete, refreshTrigger }) => {
     }
   };
 
+  const togglePublishStatus = async (id) => {
+    try {
+      const caseStudy = caseStudies.find(cs => cs._id === id);
+      const updatedStatus = caseStudy.status === "published" ? "draft" : "published";
+
+      const response = await authUtils.authenticatedFetch(`/api/admin/case-studies/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          ...caseStudy,
+          status: updatedStatus
+        }),
+      });
+
+      if (response.ok) {
+        setCaseStudies(prev =>
+          prev.map(cs =>
+            cs._id === id ? { ...cs, status: updatedStatus } : cs
+          )
+        );
+        setMessage({ type: "success", text: `Case study status updated to ${updatedStatus}` });
+      } else {
+        throw new Error('Failed to update status');
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      setMessage({ type: "danger", text: "Error updating status" });
+    }
+  };
+
   const toggleStatus = async (id, field) => {
     try {
       const caseStudy = caseStudies.find(cs => cs._id === id);
@@ -88,9 +117,9 @@ const CaseStudyList = ({ onSelect, onDelete, refreshTrigger }) => {
                          (cs.clientName || cs.client || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (cs.industry || '').toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesFilter = filterStatus === "all" || 
-                         (filterStatus === "published" && cs.published) ||
-                         (filterStatus === "draft" && !cs.published) ||
+    const matchesFilter = filterStatus === "all" ||
+                         (filterStatus === "published" && cs.status === "published") ||
+                         (filterStatus === "draft" && cs.status !== "published") ||
                          (filterStatus === "featured" && cs.featured);
     
     return matchesSearch && matchesFilter;
@@ -189,10 +218,10 @@ const CaseStudyList = ({ onSelect, onDelete, refreshTrigger }) => {
                   </td>
                   <td>
                     <div className="d-flex flex-column gap-1">
-                      <Badge 
-                        bg={cs.status === "published" ? "success" : "secondary"} 
+                      <Badge
+                        bg={cs.status === "published" ? "success" : "secondary"}
                         className="rounded-pill cursor-pointer"
-                        onClick={() => toggleStatus(cs._id, "published")}
+                        onClick={() => togglePublishStatus(cs._id)}
                         style={{ cursor: "pointer" }}
                       >
                         {cs.status === "published" ? "Published" : "Draft"}

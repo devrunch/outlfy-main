@@ -1,6 +1,56 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import { connectDB } from '@/lib/utils/database';
 import FormResponse from '@/admin/models/FormResponse';
+import { verifyRecaptcha } from '@/lib/utils/verifyRecaptcha';
+
+const ADMIN_NOTIFICATION_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || 'aashish@outlfy.com';
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Outlfy Website <onboarding@resend.dev>';
+
+const buildNotificationHtml = (data) => `
+  <h2>New Contact Form Submission</h2>
+  <p><strong>Name:</strong> ${data.name}</p>
+  <p><strong>Email:</strong> ${data.email}</p>
+  <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
+  <p><strong>Subject:</strong> ${data.subject}</p>
+  <p><strong>Message:</strong><br/>${data.message}</p>
+  ${data.company ? `<p><strong>Company:</strong> ${data.company}</p>` : ''}
+  ${data.website ? `<p><strong>Website:</strong> ${data.website}</p>` : ''}
+  ${data.budget ? `<p><strong>Budget:</strong> ${data.budget}</p>` : ''}
+  ${data.timeline ? `<p><strong>Timeline:</strong> ${data.timeline}</p>` : ''}
+`;
+
+const buildNotificationText = (data) =>
+  [
+    'New Contact Form Submission',
+    `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Phone: ${data.phone || 'N/A'}`,
+    `Subject: ${data.subject}`,
+    `Message:\n${data.message}`,
+  ].join('\n\n');
+
+async function notifyAdmin(data) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('Skipping contact form admin notification, missing env var: RESEND_API_KEY');
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { error } = await resend.emails.send({
+    from: RESEND_FROM_EMAIL,
+    to: ADMIN_NOTIFICATION_EMAIL,
+    replyTo: data.email,
+    subject: `New Contact Form Submission - ${data.name}`,
+    text: buildNotificationText(data),
+    html: buildNotificationHtml(data),
+  });
+
+  if (error) {
+    throw new Error(error.message || 'Failed to send email via Resend');
+  }
+}
 
 // CORS helpers
 const RAW_ALLOWED = ('store.outlfy.com,www.store.outlfy.com,localhost:3000,localhost:3001,localhost:3002,localhost:3003,localhost:3004,localhost:3005,localhost:3006,localhost:3007,localhost:3008,localhost:3009');
@@ -61,6 +111,15 @@ export async function POST(request) {
       );
     }
 
+    const remoteIp = request.headers.get('x-forwarded-for');
+    const recaptchaResult = await verifyRecaptcha(data.recaptchaToken, remoteIp, 'contact_submit');
+    if (!recaptchaResult.success) {
+      return NextResponse.json(
+        { error: 'Captcha verification failed. Please try again.' },
+        { status: 400, headers: { ...corsHeaders(origin) } }
+      );
+    }
+
     // Create form response
     const formResponse = new FormResponse({
       name: data.name,
@@ -83,6 +142,22 @@ export async function POST(request) {
     });
 
     await formResponse.save();
+
+    try {
+      await notifyAdmin({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        subject: data.subject || 'Contact Form Submission',
+        message: data.message,
+        company: data.company,
+        website: data.website,
+        budget: data.budget,
+        timeline: data.timeline,
+      });
+    } catch (notifyError) {
+      console.error('Failed to send admin notification email:', notifyError);
+    }
 
     return NextResponse.json(
       {
