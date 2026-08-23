@@ -131,7 +131,7 @@ const DigitalMarketingWorkflow = () => {
   }, []);
   return (
     <>
-      <section className="workflow__area-3">
+      <section id="howwework" className="workflow__area-3">
         <div className="workflow__wrapper-3" ref={workflowWrapper}>
           <div className="choose-wrapper wf_panel">
             <div className="container">
@@ -154,25 +154,35 @@ const DigitalMarketingWorkflow = () => {
                   <div className="sec-title-wrapper">
                     <h2 className="sec-sub-title">
                       why <br />
-                      choose us
+                      choose us <br />
+                      why now
                     </h2>
                     <h3 className="sec-title">
-                      Your Tech Growth, Guaranteed !
+                      Every month you wait, the debt compounds.
                     </h3>
                     <p>
-                     Most businesses waste $10,000+ a year on disconnected systems, missed automation, and tech that doesn&apos;t speak data — making it hard to take measurable action.
-Here&apos;s how we change that:
+                      The mess doesn&apos;t hold still. Every new hire, every new product, every new location adds one more thing that only lives in your head. The longer you wait, the more expensive it is to untangle — and the further ahead your competitors get while you&apos;re still firefighting.
+                    </p>
+                    <p className="research__quote">
+                      &ldquo;I wish I&apos;d done this two years ago.&rdquo;
+                      <span>— the one thing our clients say most</span>
                     </p>
                   </div>
                   <ul className="research__tools">
                     <li>
-                      <a href="https://www.linkedin.com/company/outlfy" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                      <a href="https://www.linkedin.com/company/outlfy" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i className="fa-brands fa-linkedin-in"></i>
+                      </a>
                     </li>
                     <li>
-                      <a href="https://x.com/outlfy" target="_blank" rel="noopener noreferrer">X (formerly Twitter)</a>
+                      <a href="https://x.com/outlfy" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                        <i className="fa-brands fa-x-twitter"></i>
+                      </a>
                     </li>
                     <li>
-                      <a href="https://www.instagram.com/outlfy_business_coach/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                      <a href="https://www.instagram.com/outlfy_business_coach/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <i className="fa-brands fa-instagram"></i>
+                      </a>
                     </li>
                   </ul>
                 </div>

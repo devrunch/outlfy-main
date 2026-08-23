@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import TipTapEditor from './TipTapEditor';
+import VoiceRecorder from './VoiceRecorder';
 
 const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
     linkedinUrl: testimonial?.linkedinUrl || '',
     companySiteUrl: testimonial?.companySiteUrl || '',
     videoUrl: testimonial?.videoUrl || '',
+    audioUrl: testimonial?.audioUrl || '',
     projectType: testimonial?.projectType || 'other',
     status: testimonial?.status || 'pending',
     featured: testimonial?.featured || false,
@@ -330,6 +332,18 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
           />
           {errors.videoUrl && <div className="invalid-feedback">{errors.videoUrl}</div>}
           <div className="form-text">Provide any valid video link starting with http:// or https://</div>
+        </div>
+
+        <div className="col-12">
+          <label className="form-label">Voice Recording (Optional)</label>
+          <VoiceRecorder
+            value={formData.audioUrl}
+            onChange={(audioUrl) => setFormData((prev) => ({ ...prev, audioUrl }))}
+          />
+          <div className="form-text">
+            Record a short voice testimonial directly, or upload an existing audio file. It
+            plays as an audio clip on the testimonial card.
+          </div>
         </div>
 
         {/* Settings */}

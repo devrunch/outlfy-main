@@ -161,7 +161,21 @@ const TestimonialSchema = new Schema(
         message: 'Please provide a valid video URL starting with http:// or https://'
       }
     },
-    
+
+    // Optional voice recording — either a base64-encoded audio clip
+    // (recorded live or uploaded in the admin dashboard) or a hosted URL.
+    audioUrl: {
+      type: String,
+      required: false,
+      validate: {
+        validator: function(v) {
+          if (!v) return true; // Optional field
+          return /^data:audio\/[a-z0-9.+-]+;base64,/i.test(v) || /^https?:\/\/.+/.test(v);
+        },
+        message: 'Audio must be a valid base64-encoded recording or a URL starting with http:// or https://'
+      }
+    },
+
     // Project/Service context
     projectType: {
       type: String,
@@ -391,6 +405,10 @@ export const updateTestimonial = async (id, updateData) => {
       unsetFields.videoUrl = '';
       delete updateFields.videoUrl;
     }
+    if (updateFields.audioUrl === '' || updateFields.audioUrl === null || updateFields.audioUrl === undefined) {
+      unsetFields.audioUrl = '';
+      delete updateFields.audioUrl;
+    }
 
     // Build update operation
     const updateOperation = {
@@ -402,10 +420,14 @@ export const updateTestimonial = async (id, updateData) => {
       updateOperation.$unset = unsetFields;
     }
 
-    // When using $unset, we need to disable validators to avoid validation errors on removed fields
+    // Validators must always run here — this is the only gate that stops
+    // things like a raw <iframe> pasted into the testimonial text from
+    // reaching the DB. linkedinUrl/videoUrl/audioUrl (the only fields ever
+    // unset above) are all optional, so unsetting them alongside validating
+    // the rest of the document is safe.
     const options = {
       new: true,
-      runValidators: Object.keys(unsetFields).length === 0, // Only run validators if not unsetting fields
+      runValidators: true,
       context: 'query'
     };
 

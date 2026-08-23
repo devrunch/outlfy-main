@@ -93,6 +93,15 @@
 
         @include menu_anim(var(--black-2));
       }
+
+      // The caret sits beside the link text without touching the <li>'s
+      // own inline-block sizing/padding, so "Solutions" keeps the exact
+      // same position in the nav row as every other item.
+      &.has-dropdown {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
     }
   }
 
@@ -112,6 +121,32 @@
       color: var(--white);
     }
   }
+
+  // Small chevron marking a dropdown trigger — signals "this expands"
+  // before the visitor has to hover to discover it. Lives as a sibling of
+  // the <a>, not inside it: the menu's own hover-reveal script rewrites
+  // the link's innerHTML on mount, which would silently wipe an icon
+  // nested inside it.
+  > li.has-dropdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.nav-caret {
+  font-size: 9px;
+  color: var(--white);
+  transition: transform 0.3s ease;
+}
+
+.main-menu-3 .nav-caret,
+.main-menu-4 .nav-caret {
+  color: var(--black-2);
+}
+
+.has-dropdown:hover .nav-caret {
+  transform: rotate(180deg);
 }
 
 // Dropdown Menu

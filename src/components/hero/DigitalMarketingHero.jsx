@@ -2,12 +2,12 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { SplitText } from "@/plugins";
+import { SplitText, ScrollTrigger } from "@/plugins";
 import ArrowDownSm from "../../../public/assets/imgs/icon/arrow-down-sm.png";
 import Hero31 from "../../../public/assets/imgs/hero/3/1.jpg";
 import Image from "next/image.js";
 
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 const DigitalMarketingHero = () => {
   const titleLeft = useRef();
@@ -21,6 +21,7 @@ const DigitalMarketingHero = () => {
   const videoTitle = useRef();
   const heroArea = useRef();
   const wrapper = useRef();
+  const heroImageRef = useRef();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -71,6 +72,22 @@ const DigitalMarketingHero = () => {
           { duration: 0.25, opacity: 1, y: 0, ease: "power2.out" },
           "-=0.8"
         );
+
+        // The hero photo sits at the bottom of a very tall section — on
+        // tall viewports it can render inside the initial fold. Keep it
+        // hidden until the user actually scrolls down to it.
+        gsap.set(heroImageRef.current, { opacity: 0, y: 40 });
+        gsap.to(heroImageRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: heroImageRef.current,
+            start: "top 90%",
+            once: true,
+          },
+        });
       });
       return () => tHero.revert();
     }
@@ -127,8 +144,8 @@ const DigitalMarketingHero = () => {
     <>
       <section className="hero__area-3" ref={heroArea}>
         <div className="container">
-          <div className="row">
-            <div className="col-xxl-12">
+          <div className="row align-items-start">
+            <div className="col-xxl-6 col-xl-6 col-lg-6">
               <div className="hero__inner-3" style={{ transition: "opacity 0.5s ease-in-out" }}>
                 <div className="sec-title-wrapper">
                   <h2 className="sec-sub-title">YOUR</h2>
@@ -136,38 +153,36 @@ const DigitalMarketingHero = () => {
                     <h3 className="sec-title title-left" ref={titleLeft}>
                       TECH
                     </h3>
-
-                    <h3 className="sec-title-small title-right" ref={titleRight}>
-                      PARTNER
-                    </h3>
                   </div>
                 </div>
 
-                <div className="hero__text-3">
-                  <p className="hero__text-animation mb-2 video-title mt-3" ref={heroTextAnim}>
-                    We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
-                    <br />
-                    <span className="d-block d-lg-none">We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
-</span>
+                <div className="hero__aside-text mt-3 mb-3">
+                  <p ref={heroTextAnim2}>
+                    We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
                   </p>
-                  <a
-                    ref={buttonAmin1}
-                    href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
-                    className="wc-btn-simple mt-3"
-                    style={{ opacity: 0 }}
-                  >
-                    Apply for a free strategy session.
-                  </a>
-                  <br />
-                  <a
-                    ref={buttonAmin2}
-                    href="#howwework"
-                    onClick={handleSmoothScroll}
-                    className="wc-btn-simple__light"
-                    style={{ opacity: 0 }}
-                  >
-                    See How we work.
-                  </a>
+                </div>
+
+                <div className="hero__text-3">
+                  <div className="hero__cta-group">
+                    <a
+                      ref={buttonAmin1}
+                      href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
+                      className="wc-btn-simple"
+                      style={{ opacity: 0 }}
+                    >
+                      Apply for a free strategy session.
+                      <i className="fa-solid fa-arrow-right wc-btn-simple__icon"></i>
+                    </a>
+                    <a
+                      ref={buttonAmin2}
+                      href="#howwework"
+                      onClick={handleSmoothScroll}
+                      className="wc-btn-simple__light"
+                      style={{ opacity: 0 }}
+                    >
+                      See How we work.
+                    </a>
+                  </div>
                 </div>
                 <div className="scroll-down">
                   <button>
@@ -181,16 +196,21 @@ const DigitalMarketingHero = () => {
                 </div>
               </div>
             </div>
+
+            <div className="col-xxl-6 col-xl-6 col-lg-6 hero__partner-col">
+              <div className="hero__aside-text mb-4">
+                <p className="hero__text-animation" ref={heroTextAnim}>
+                  We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
+                </p>
+              </div>
+              <h3 className="sec-title-small title-right title-right--aside" ref={titleRight}>
+                PARTNER
+              </h3>
+            </div>
           </div>
         </div>
-        <div className="hero__text-3 d-none d-lg-block" style={{ position: "absolute", left: "70%", top: "240px" }}>
-          <p className=" hero__text-animation" style={{ marginLeft: "-80px", width: "380px" }} ref={heroTextAnim2}>
-            {/* ▶ WATCH <span>HOW IT WORKS</span> */}
-            We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
-          </p>
-        </div>
-      
-        <div className="hero3-img-ani" style={{ transition: "opacity 0.5s ease-in-out" }}>
+
+        <div className="hero3-img-ani" ref={heroImageRef} style={{ transition: "opacity 0.5s ease-in-out" }}>
           <Image
             priority
             width={1195}

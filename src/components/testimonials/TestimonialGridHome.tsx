@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import Link from "next/link";
 import { connectDB } from "@/lib/utils/database";
 import { getFeaturedTestimonials } from "@/admin/models/Testimonial";
 import TestimonialCard from "./TestimonialCard";
@@ -15,6 +16,7 @@ export interface Testimonial {
   linkedinUrl: string;
   companySiteUrl: string;
   videoUrl?: string;
+  audioUrl?: string;
   projectType: string;
   status: string;
   featured: boolean;
@@ -58,6 +60,7 @@ const normalizeTestimonials = (items: unknown[]): Testimonial[] => {
       linkedinUrl: typeof plain.linkedinUrl === "string" ? plain.linkedinUrl : "",
       companySiteUrl: typeof plain.companySiteUrl === "string" ? plain.companySiteUrl : "",
       videoUrl: typeof plain.videoUrl === "string" ? plain.videoUrl : undefined,
+      audioUrl: typeof plain.audioUrl === "string" ? plain.audioUrl : undefined,
       projectType: typeof plain.projectType === "string" ? plain.projectType : "",
       status: typeof plain.status === "string" ? plain.status : "",
       featured: false,
@@ -96,15 +99,8 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
   const provided = Array.isArray(initialTestimonials) ? initialTestimonials.slice(0, 3) : null;
   const testimonials = provided ?? (await fetchFeaturedTestimonials());
 
-  if (!testimonials) {
-    return null;
-  }
-
-  const trimmed = testimonials.slice(0, 3);
-  if (!trimmed.length) {
-    return null;
-  }
-
+  const trimmed = testimonials ? testimonials.slice(0, 3) : [];
+  const hasTestimonials = trimmed.length > 0;
   const testimonialCount = trimmed.length;
   const isCentered = testimonialCount < 3;
 
@@ -115,7 +111,7 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
           .testimonial-bento-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(1, 250px);
+            align-items: stretch;
             gap: 14px;
           }
 
@@ -130,7 +126,6 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
             background: rgba(255, 255, 255, 0.8);
             display: flex;
             flex-direction: column;
-            justify-content: center;
             height: 100%;
             position: relative;
             overflow: hidden;
@@ -153,23 +148,22 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
             opacity: 1;
           }
 
-          .testimonial-bento-item.rowspan-2 {
-            grid-row: span 2;
-          }
-
           @media (max-width: 991px) {
             .testimonial-bento-grid {
               grid-template-columns: 1fr;
-              grid-template-rows: none;
             }
 
             .testimonial-bento-grid.centered {
               max-width: 100%;
             }
+          }
 
-            .testimonial-bento-item.rowspan-2 {
-              grid-row: span 1;
-            }
+          /* Secondary action below the featured cards — reuses the site's
+             existing wc-btn-simple CTA style (see DigitalMarketingHero). */
+          .testimonial-view-all {
+            display: flex;
+            justify-content: center;
+            margin-top: 48px;
           }
         `
       }} />
@@ -177,18 +171,27 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
       <div style={{ marginTop: "-120px" }}>
         <TestimonialHero />
 
-        <div className="container mt-60 mb-5">
-          <div className={`testimonial-bento-grid${isCentered ? ' centered' : ''}`}>
-            {trimmed.map((item) => (
-              <div
-                key={item._id}
-                className={`testimonial-bento-item${item.videoUrl ? " rowspan-2" : ""}`}
-              >
-                <TestimonialCard testimonial={item} />
-              </div>
-            ))}
+        {hasTestimonials && (
+          <div className="container mt-60 mb-5">
+            <div className={`testimonial-bento-grid${isCentered ? ' centered' : ''}`}>
+              {trimmed.map((item) => (
+                <div
+                  key={item._id}
+                  className="testimonial-bento-item"
+                >
+                  <TestimonialCard testimonial={item} fixedSize expandable />
+                </div>
+              ))}
+            </div>
+
+            <div className="testimonial-view-all">
+              <Link href="/testimonials" className="wc-btn-simple">
+                View all client stories
+                <i className="fa-solid fa-arrow-right wc-btn-simple__icon"></i>
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
