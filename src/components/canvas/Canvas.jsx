@@ -71,16 +71,24 @@ const Canvas = ({ bladeMode = "", ofCanvasArea }) => {
               <h3 className="social-title">Follow Us</h3>
               <ul>
                 <li>
-                  <a href="https://www.instagram.com/outlfy_business_coach/">Instagram</a>
+                  <a href="https://www.instagram.com/outlfy_business_coach/" aria-label="Instagram">
+                    <i className="fa-brands fa-instagram"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://www.facebook.com/Outlfy/">Facebook</a>
+                  <a href="https://www.facebook.com/Outlfy/" aria-label="Facebook">
+                    <i className="fa-brands fa-facebook-f"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://x.com/outlfy"> X (Twitter)</a>
+                  <a href="https://x.com/outlfy" aria-label="X (Twitter)">
+                    <i className="fa-brands fa-x-twitter"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://www.linkedin.com/company/outlfy">LinkedIn</a>
+                  <a href="https://www.linkedin.com/company/outlfy" aria-label="LinkedIn">
+                    <i className="fa-brands fa-linkedin-in"></i>
+                  </a>
                 </li>
               </ul>
             </div>

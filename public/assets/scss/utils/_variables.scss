@@ -60,6 +60,12 @@
 :root {
   --primary: #c9f31d;
   --secondary: #2c2c2c;
+  // Dark, muted green accent (not the bright chartreuse --primary) used
+  // sparingly in the four-problems section. --accent-green is legible as
+  // text on the section's near-black surface; --green-dark is for glows/
+  // fills where the value itself doesn't need to pass contrast alone.
+  --accent-green: #2e9e63;
+  --green-dark: #1f4d36;
 
   --black: #000;
   --black-2: #121212;

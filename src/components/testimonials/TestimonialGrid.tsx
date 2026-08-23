@@ -13,6 +13,7 @@ interface Testimonial {
   linkedinUrl: string;
   companySiteUrl: string;
   videoUrl?: string;
+  audioUrl?: string;
   projectType: string;
   status: string;
   featured: boolean;
@@ -44,7 +45,8 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials = [] }) 
       : '';
     const baseWeight = plainText.length || 0;
     const videoWeight = item.videoUrl ? 600 : 0;
-    return baseWeight + videoWeight;
+    const audioWeight = item.audioUrl ? 100 : 0;
+    return baseWeight + videoWeight + audioWeight;
   };
 
   displayTestimonials.forEach((item) => {
@@ -112,6 +114,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials = [] }) 
 
         .bento-column {
           flex: 1;
+          min-width: 0;
           display: flex;
           flex-direction: column;
           gap: 14px;
@@ -121,6 +124,7 @@ const TestimonialGrid: React.FC<TestimonialGridProps> = ({ testimonials = [] }) 
           background: rgba(255, 255, 255, 0.8);
           display: flex;
           flex-direction: column;
+          min-width: 0;
           position: relative;
         }
 

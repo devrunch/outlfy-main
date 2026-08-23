@@ -1,0 +1,142 @@
+/*----------------------------------------*/
+/*  16b. THE OFFER CSS START
+/*----------------------------------------*/
+
+// Light surface, matching .provide__area before it. Two-part layout: a
+// full-width eyebrow + headline, then a circular CTA sitting beside the
+// offer's details — pay-for-results bullets, the risk-reversal line, and
+// the soft scarcity note.
+
+.offer {
+  &__area {
+    background-color: var(--white);
+    overflow: hidden;
+  }
+
+  &__head {
+    max-width: 780px;
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--black-3);
+    margin-bottom: 18px;
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      flex-shrink: 0;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--black-2);
+
+    @media #{$xl} {
+      font-size: 44px;
+    }
+
+    @media #{$lg} {
+      font-size: 36px;
+    }
+
+    @media #{$md} {
+      font-size: 30px;
+    }
+
+    @media #{$sm} {
+      font-size: 26px;
+    }
+  }
+
+  &__body-row {
+    margin-top: 70px;
+    align-items: flex-start;
+
+    @media #{$md},
+    #{$sm} {
+      margin-top: 48px;
+    }
+  }
+
+  &__cta-col {
+    display: flex;
+    justify-content: flex-start;
+
+    @media #{$md},
+    #{$sm} {
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+  }
+
+  &__details {
+    max-width: 620px;
+  }
+
+  &__intro {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--black-3);
+    margin: 0 0 28px;
+  }
+
+  &__values {
+    list-style: none;
+    margin: 0 0 32px;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--black-2);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  &__plus {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--accent-green);
+  }
+
+  &__closer {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--black-2);
+    margin: 0 0 8px;
+  }
+
+  &__note {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--gray-2);
+    margin: 0;
+  }
+}

@@ -65,8 +65,9 @@ export default function NavItem({ nav, navStyle = "" }) {
               );
             } else if (el.type === "dropdown") {
               return (
-                <li key={i}>
+                <li className="has-dropdown" key={i}>
                   <Link href={el.link}>{el.nav_name}</Link>
+                  <i className="fa-solid fa-chevron-down nav-caret" aria-hidden="true"></i>
                   <ul className="main-dropdown">
                     {el.sub_nav.map((subEl, index) => {
                       return (

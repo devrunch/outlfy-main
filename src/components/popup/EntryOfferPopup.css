@@ -1,0 +1,149 @@
+/* Entry offer popup — dark surface, sharp corners, matches the site's
+   black/white system. react-bootstrap's Modal supplies focus trap,
+   Escape-to-close and backdrop-click-to-close; this file only re-skins it
+   and drives the fade/scale-in motion via its own keyframes so it is not
+   coupled to Bootstrap's internal fade/show timing. */
+
+@keyframes entryOfferBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes entryOfferBackdropOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes entryOfferContentIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes entryOfferContentOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.97); }
+}
+
+/* The site's own header/cursor/preloader chrome already claims z-index up
+   to ~99999 (see _header.scss, _preloader.scss); this must sit above all
+   of it regardless of when in the page lifecycle it mounts. */
+.entry-offer {
+  z-index: 999999;
+}
+
+.entry-offer__backdrop {
+  z-index: 999998;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  animation: entryOfferBackdropIn 300ms ease-out both;
+}
+
+.entry-offer__backdrop--closing {
+  animation: entryOfferBackdropOut 200ms ease-in both;
+}
+
+.entry-offer__dialog {
+  max-width: 460px;
+  width: calc(100% - 32px);
+  margin: 1.75rem auto;
+}
+
+.entry-offer__content {
+  background-color: var(--black-2);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  padding: 48px 40px 40px;
+  animation: entryOfferContentIn 300ms ease-out both;
+}
+
+.entry-offer--closing .entry-offer__content {
+  animation: entryOfferContentOut 200ms ease-in both;
+}
+
+.entry-offer__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  opacity: 0.7;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.entry-offer__close:hover,
+.entry-offer__close:focus-visible {
+  opacity: 1;
+}
+
+.entry-offer__heading {
+  margin: 0 0 16px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.entry-offer__text {
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--white-3);
+}
+
+.entry-offer__cta {
+  width: 100%;
+  background-color: var(--white);
+  color: var(--black-2);
+  border-color: var(--white);
+}
+
+.entry-offer__cta::before {
+  background-color: var(--black-2);
+}
+
+.entry-offer__cta:hover {
+  color: var(--white);
+}
+
+.entry-offer__later {
+  display: block;
+  margin: 16px auto 0;
+  background: none;
+  border: none;
+  padding: 4px;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: var(--white-3);
+  opacity: 0.7;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 180ms ease;
+}
+
+.entry-offer__later:hover,
+.entry-offer__later:focus-visible {
+  opacity: 1;
+}
+
+@media (max-width: 575px) {
+  .entry-offer__content {
+    padding: 40px 24px 32px;
+  }
+
+  .entry-offer__heading {
+    font-size: 22px;
+  }
+}

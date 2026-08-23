@@ -225,7 +225,14 @@ const TestimonialView = ({ testimonial, onEdit, onClose, onDelete }) => {
                 </div>
               )}
               
-              {!testimonial.linkedinUrl && !testimonial.videoUrl && testimonial.companySiteUrl && (
+              {testimonial.audioUrl && (
+                <div className="mb-3">
+                  <label className="form-label fw-bold">Voice Recording</label>
+                  <audio src={testimonial.audioUrl} controls style={{ width: '100%', maxWidth: '400px' }} />
+                </div>
+              )}
+
+              {!testimonial.linkedinUrl && !testimonial.videoUrl && !testimonial.audioUrl && testimonial.companySiteUrl && (
                 <div className="alert alert-info mb-0">
                   <i className="fas fa-info-circle me-2"></i>
                   Only company website is available for this testimonial.

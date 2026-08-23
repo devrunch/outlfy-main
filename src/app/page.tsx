@@ -11,9 +11,10 @@ import RootLayout from "@/components/common/layout/RootLayout";
 import DigitalMarketingHero from "@/components/hero/DigitalMarketingHero";
 import DigitalMarketingBrand from "@/components/brand/DigitalMarketingBrand";
 import DigitalMarketingAbout from "@/components/about/DigitalMarketingAbout";
-import DigitalMarketingService from "@/components/service/DigitalMarketingService";
+import TheOffer from "@/components/solutions/TheOffer";
 import DigitalMarketingWorkflow from "@/components/workflow/DigitalMarketingWorkflow";
 import TestimonialGrid, { type Testimonial as FeaturedTestimonial } from '@/components/testimonials/TestimonialGridHome';
+import EntryOfferPopup from "@/components/popup/EntryOfferPopup";
 
 // Helper to convert Mongoose document to plain object
 const toPlainObject = (doc: unknown) => {
@@ -44,6 +45,7 @@ const normalizeFeaturedTestimonials = (items: unknown[]): FeaturedTestimonial[] 
       linkedinUrl: typeof plain.linkedinUrl === 'string' ? plain.linkedinUrl : '',
       companySiteUrl: typeof plain.companySiteUrl === 'string' ? plain.companySiteUrl : '',
       videoUrl: typeof plain.videoUrl === 'string' ? plain.videoUrl : undefined,
+      audioUrl: typeof plain.audioUrl === 'string' ? plain.audioUrl : undefined,
       projectType: typeof plain.projectType === 'string' ? plain.projectType : '',
       status: typeof plain.status === 'string' ? plain.status : '',
       featured: true,
@@ -118,12 +120,13 @@ export default async function DigitalMarketing() {
 
   return (
     <main suppressHydrationWarning>
+      <EntryOfferPopup />
       <RootLayout header="header1" footer="footer1">
         <DigitalMarketingHero />
         <DigitalMarketingBrand />
-        {featuredTestimonials && <TestimonialGrid testimonials={featuredTestimonials} />}
+        <TestimonialGrid testimonials={featuredTestimonials || []} />
         <DigitalMarketingAbout />
-        <DigitalMarketingService />
+        <TheOffer />
         {/* <DigitalMarketingProtfolio /> */}
         {/* <DigitalMarketingTestimonial /> */}
         <DigitalMarketingWorkflow />

@@ -12,9 +12,11 @@
 
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   border-radius: 8px;
-  padding: 24px;
+  padding: 28px;
   width: 100%;
-  height: auto;
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -37,19 +39,22 @@
 .testimonial-card--regular {
   background: transparent;
   color: #374151;
-  border: 1.5px solid #e5e7eb;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   width: auto;
 }
 
 /* Content Styles */
 .testimonial-card__content {
   margin-bottom: 20px;
+  min-width: 0;
 }
 
 .testimonial-card__text {
   font-family: 'Inter', sans-serif;
   font-size: var(--text-size);
   line-height: var(--text-line-height);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .testimonial-card__text img {
@@ -84,11 +89,24 @@
   border-radius: 8px;
 }
 
+/* Voice recording styles */
+.testimonial-card__audio-wrap {
+  margin-bottom: 16px;
+}
+
+.testimonial-card__audio {
+  width: 100%;
+  height: 36px;
+  display: block;
+}
+
 /* Footer Styles */
 .testimonial-card__footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .testimonial-card__author {
@@ -210,5 +228,161 @@
     --logo-box-w: 76px;
     --logo-box-h: 38px;
     --text-size: 14.5px;
+  }
+}
+
+/* Fixed-size, click-to-expand variant (Client Stories home grid) — every
+   card in the row holds the same footprint regardless of quote length; the
+   quote itself is clamped with a clean ellipsis instead of scrolling. */
+.testimonial-card--fixed {
+  height: 320px;
+}
+
+.testimonial-card--fixed .testimonial-card__content {
+  max-height: none;
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.testimonial-card--fixed .testimonial-card__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.testimonial-card--clickable {
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Inset, not outset — .testimonial-bento-item (the grid wrapper on the
+   home page) clips overflow, which would crop an outward shadow flush
+   against the card's own edge. An inset shadow always stays inside. */
+.testimonial-card--clickable:hover,
+.testimonial-card--clickable:focus-visible {
+  border-color: rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-card--clickable:focus-visible {
+  outline: 2px solid var(--black-2);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .testimonial-card--fixed {
+    height: 300px;
+  }
+
+  .testimonial-card--fixed .testimonial-card__text {
+    -webkit-line-clamp: 5;
+  }
+}
+
+/* Expand modal — a scaled-up version of the same card: same white surface,
+   sharp corners, subtle border, B&W tokens. react-bootstrap's Modal
+   supplies the focus trap, Escape-to-close and backdrop-click-to-close;
+   this file only re-skins it and drives its own fade/scale-in motion so it
+   isn't coupled to Bootstrap's internal fade/show timing (same pattern as
+   EntryOfferPopup.css). */
+@keyframes testimonialBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes testimonialBackdropOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes testimonialContentIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes testimonialContentOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.97); }
+}
+
+.testimonial-modal {
+  z-index: 999999;
+}
+
+.testimonial-modal__backdrop {
+  z-index: 999998;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  animation: testimonialBackdropIn 300ms ease-out both;
+}
+
+.testimonial-modal__backdrop--closing {
+  animation: testimonialBackdropOut 200ms ease-in both;
+}
+
+.testimonial-modal__dialog {
+  max-width: 560px;
+  width: calc(100% - 32px);
+  margin: 1.75rem auto;
+}
+
+.testimonial-modal__content-wrap {
+  position: relative;
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  padding: 44px 40px 40px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: testimonialContentIn 300ms ease-out both;
+}
+
+.testimonial-modal--closing .testimonial-modal__content-wrap {
+  animation: testimonialContentOut 200ms ease-in both;
+}
+
+.testimonial-modal .testimonial-card__text {
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.testimonial-modal__footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  color: var(--black-3, #555);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.testimonial-modal__close:hover,
+.testimonial-modal__close:focus-visible {
+  background-color: var(--black-2, #121212);
+  color: #ffffff;
+  border-color: var(--black-2, #121212);
+}
+
+@media (max-width: 640px) {
+  .testimonial-modal__content-wrap {
+    padding: 36px 24px 28px;
   }
 }

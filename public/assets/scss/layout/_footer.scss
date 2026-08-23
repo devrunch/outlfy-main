@@ -246,7 +246,7 @@
 
       p {
         max-width: 310px;
-        color: var(--gray-2);
+        color: var(--white);
       }
     }
   }
@@ -450,7 +450,10 @@
         }
 
         a {
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
           font-weight: 400;
           font-size: 16px;
           line-height: 1.5;
@@ -460,6 +463,12 @@
           padding: 38px 0;
           background-color: transparent;
           transition: all 0.3s;
+
+          i {
+            width: 20px;
+            font-size: 19px;
+            text-align: center;
+          }
 
           @media #{$lg} {
             padding: 30px 0;
@@ -579,6 +588,16 @@
         @media #{$sm} {
           font-size: 50px;
         }
+
+        // Icon sized relative to the giant "Let's talk" text (em units)
+        // so it scales down with it at every breakpoint automatically,
+        // with enough gap that it doesn't crowd the last character.
+        i {
+          display: inline-block;
+          font-size: 0.35em;
+          margin-left: 0.35em;
+          vertical-align: middle;
+        }
       }
     }
   }
@@ -664,7 +683,7 @@
     &-3 {
       p {
         color: var(--white);
-        max-width: 325px;
+        max-width: 440px;
 
         @media #{$md} {
           max-width: 100%;
@@ -682,6 +701,18 @@
           &:hover {
             color: var(--gray-2);
           }
+        }
+      }
+
+      // Keeps the copyright line intact on its own row instead of
+      // wrapping mid-sentence before the deliberate <br/> ever kicks in —
+      // "Trusted by 50+ businesses" should be the only second line.
+      .footer__copyright-line {
+        display: inline-block;
+        white-space: nowrap;
+
+        @media #{$sm} {
+          white-space: normal;
         }
       }
     }

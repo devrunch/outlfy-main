@@ -40,7 +40,14 @@ const TestimonialManagement = () => {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.error('Form submission: response was not JSON', response.status, parseError);
+        alert(`Failed to save testimonial (HTTP ${response.status}, non-JSON response — check the server console)`);
+        return;
+      }
 
       if (result.success) {
         alert(result.message || 'Testimonial saved successfully!');
@@ -48,11 +55,12 @@ const TestimonialManagement = () => {
         setSelectedTestimonial(null);
         setRefreshTrigger(prev => prev + 1);
       } else {
-        alert(result.message || 'Failed to save testimonial');
+        console.error('Form submission failed:', response.status, result);
+        alert(`${result.message || 'Failed to save testimonial'}${result.error ? `\n\nDetails: ${result.error}` : ''}`);
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      alert('Network error occurred while saving testimonial');
+      alert(`Network error occurred while saving testimonial: ${error.message}`);
     }
   };
 

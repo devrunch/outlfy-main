@@ -141,22 +141,31 @@ export default function Footer1() {
             <div className="footer__social-3">
               <ul>
                 <li>
-                  <a href="https://www.linkedin.com/company/outlfy">Linkedin</a>
+                  <a href="https://www.linkedin.com/company/outlfy" aria-label="LinkedIn">
+                    <i className="fa-brands fa-linkedin-in"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://x.com/outlfy">X (Twitter)</a>
+                  <a href="https://x.com/outlfy" aria-label="X (Twitter)">
+                    <i className="fa-brands fa-x-twitter"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://www.instagram.com/outlfy_business_coach/">Instagram</a>
+                  <a href="https://www.instagram.com/outlfy_business_coach/" aria-label="Instagram">
+                    <i className="fa-brands fa-instagram"></i>
+                  </a>
                 </li>
                 <li>
-                  <a href="https://www.facebook.com/Outlfy/">facebook</a>
+                  <a href="https://www.facebook.com/Outlfy/" aria-label="Facebook">
+                    <i className="fa-brands fa-facebook-f"></i>
+                  </a>
                 </li>
               </ul>
             </div>
             <div className="footer__contact-3">
               <Link className="end" href="/contact">
                 Let’s talk
+                <i className="fa-solid fa-arrow-right"></i>
               </Link>
             </div>
           </div>
@@ -168,7 +177,10 @@ export default function Footer1() {
               <div className="col-xxl-4 col-xl-4 col-lg-4">
                 <div className="footer__copyright-3">
                   <p>
-                    © 2022 - 2025 | Alrights reserved by Outlfy <br/>
+                    <span className="footer__copyright-line">
+                      © 2026 - 2030 | All rights reserved by Outlfy
+                    </span>
+                    <br />
                     <Link href="/">
                       Trusted by 50+ businesses
                     </Link>

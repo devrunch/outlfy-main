@@ -255,6 +255,10 @@
         line-height: 0.82;
         text-transform: uppercase;
         color: var(--black-2);
+        // SplitText breaks this into per-character spans for the reveal
+        // animation, so without nowrap a narrow column would wrap mid-word
+        // between characters instead of just overflowing the column.
+        white-space: nowrap;
 
         @media #{$xxxl} {
           font-size: 160px;
@@ -279,6 +283,35 @@
         @media #{$sm} {
           font-size: 80px;
         }
+
+        // Relocated into the aside column, paired with TECH in a diagonal
+        // composition (see hero__aside-text swap) — sized to the 50/50
+        // column split with a deliberately generous safety margin (not
+        // just the tightest fit) so browser zoom's font/subpixel rounding
+        // can never push it past the column edge. overflow+ellipsis below
+        // is a defensive fallback, not the primary fix.
+        &.title-right--aside {
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 115px;
+
+          @media #{$xl} {
+            font-size: 100px;
+          }
+
+          @media #{$lg} {
+            font-size: 80px;
+          }
+
+          @media #{$md} {
+            font-size: 85px;
+          }
+
+          @media #{$sm} {
+            font-size: 48px;
+          }
+        }
       }
 
       .sec-title {
@@ -288,6 +321,7 @@
         line-height: 0.82;
         text-transform: uppercase;
         color: var(--black-2);
+        white-space: nowrap;
 
         @media #{$xxxl} {
           font-size: 260px;
@@ -733,6 +767,39 @@
         font-size: 18px;
         line-height: 1.4;
       }
+    }
+  }
+
+  // Supporting copy that rides alongside the hero-3 headline column.
+  &__aside-text {
+    max-width: 380px;
+
+    p {
+      font-size: 18px;
+      line-height: 1.4;
+      color: var(--black-3);
+    }
+  }
+
+  // Right-hand column pairing PARTNER with its supporting line. Dropped
+  // below TECH's own top edge (rather than aligned to it, via
+  // `.row.align-items-start`) so the two headline words read as a
+  // diagonal cascade — TECH upper-left, PARTNER lower-right — instead of
+  // sitting level with each other. Below lg the grid stacks the columns
+  // instead, so this becomes a plain top gap there.
+  &__partner-col {
+    margin-top: 150px;
+
+    @media #{$lg} {
+      margin-top: 100px;
+    }
+
+    @media #{$md} {
+      margin-top: 40px;
+    }
+
+    @media #{$sm} {
+      margin-top: 30px;
     }
   }
 
