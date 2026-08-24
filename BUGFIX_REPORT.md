@@ -3,7 +3,7 @@
 Investigation and fixes for three production bugs: homepage text overlapping on zoom, the Testimonials section not working, and navigation links needing multiple clicks. Includes root cause analysis, exact changes, why each fix works, and verification performed.
 
 ---
-
+ 
 ## Bug 1: Homepage Text Overlapping When Zooming
 
 ### Root Cause
