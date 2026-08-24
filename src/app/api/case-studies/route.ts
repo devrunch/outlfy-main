@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import CaseStudy from '@/admin/models/CaseStudy';
+import { toMediaUrl } from '@/lib/utils/caseStudyMedia';
 
 export async function GET(request: NextRequest) {
   try {
@@ -107,10 +108,21 @@ export async function GET(request: NextRequest) {
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;
 
+    // Swap embedded base64 images for URLs into the media route below —
+    // otherwise this JSON response (fetched client-side by the case
+    // studies listing) balloons with every card's full-size image data.
+    const media = caseStudies.map((cs: any) => ({
+      ...cs,
+      featuredImage: cs.featuredImage
+        ? { ...cs.featuredImage, url: toMediaUrl(cs._id, 'featured', cs.featuredImage.url, cs.updatedAt) }
+        : cs.featuredImage,
+      clientLogo: toMediaUrl(cs._id, 'logo', cs.clientLogo, cs.updatedAt),
+    }));
+
     return NextResponse.json({
       success: true,
       data: {
-        caseStudies,
+        caseStudies: media,
         pagination: {
           currentPage: page,
           totalPages,
@@ -125,6 +137,13 @@ export async function GET(request: NextRequest) {
           technologies: technologies.map((t: any) => t._id).filter(Boolean)
         }
       }
+    }, {
+      headers: {
+        // Case studies only change via admin publish/edit — safe to let a
+        // CDN/browser reuse this response instead of hitting Mongo (and
+        // re-shipping every card's image URLs) on every visit.
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+      },
     });
 
   } catch (error) {

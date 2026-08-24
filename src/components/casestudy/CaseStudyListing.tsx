@@ -139,7 +139,7 @@ const CaseStudyListing = () => {
                     <Link href={`/case-studies/${caseStudy.slug}`}>
                       <div className="img-box">
                         <Image
-                          priority
+                          priority={index === 0}
                           style={{ width: "auto", height: "auto" }}
                           className="image-box__item"
                           src={caseStudy.featuredImage?.url || '/assets/imgs/blog/1.jpg'}
@@ -151,7 +151,7 @@ const CaseStudyListing = () => {
                           }}
                         />
                         <Image
-                          priority
+                          priority={index === 0}
                           style={{ width: "auto", height: "auto" }}
                           className="image-box__item"
                           src={caseStudy.featuredImage?.url || '/assets/imgs/blog/1.jpg'}
