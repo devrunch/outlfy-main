@@ -111,6 +111,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     linkedinUrl: 'https://linkedin.com/in/sarahjohnson',
     companySiteUrl: 'https://techcorp.com',
     videoUrl: 'https://youtube.com/embed/dQw4w9WgXcQ',
+    audioUrl: undefined,
     projectType: 'web-development',
     status: 'approved',
     featured: false,
