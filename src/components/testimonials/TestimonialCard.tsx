@@ -252,6 +252,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             src={data.profilePicture}
             alt={data.name}
             className="testimonial-card__avatar"
+            loading="lazy"
+            decoding="async"
+            width={48}
+            height={48}
           />
           <div className="testimonial-card__info">
             <h4 className="testimonial-card__name">{data.name}</h4>
@@ -265,6 +269,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             src={data.companyLogo}
             alt={data.company}
             className="testimonial-card__company-logo"
+            loading="lazy"
+            decoding="async"
+            width={40}
+            height={40}
           />
         </div>
       </div>
@@ -345,6 +353,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 src={data.profilePicture}
                 alt={data.name}
                 className="testimonial-card__avatar"
+                decoding="async"
               />
               <div className="testimonial-card__info">
                 <h4 id={headingId} className="testimonial-card__name">
@@ -361,6 +370,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                 src={data.companyLogo}
                 alt={data.company}
                 className="testimonial-card__company-logo"
+                decoding="async"
               />
             </div>
           </div>
