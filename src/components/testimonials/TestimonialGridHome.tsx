@@ -156,6 +156,14 @@ const TestimonialGridHome = async ({ testimonials: initialTestimonials = null }:
             .testimonial-bento-grid.centered {
               max-width: 100%;
             }
+
+            /* A fixed-size card with a video can grow taller than the row's
+               default height (see TestimonialCard.css); let it, instead of
+               clipping the footer off. */
+            .testimonial-bento-item {
+              height: auto;
+              overflow: visible;
+            }
           }
 
           /* Secondary action below the featured cards — reuses the site's

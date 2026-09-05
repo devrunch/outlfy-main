@@ -12,6 +12,7 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.outlfy.com'),
   title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
   description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
   openGraph: {

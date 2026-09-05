@@ -5,6 +5,27 @@ import { getFeaturedTestimonials } from '@/admin/models/Testimonial';
 export const metadata: Metadata = {
   title: 'Outlfy - Tech Partners',
   description: 'Outlfy helps businesses succeed with custom software development and technology strategy',
+  openGraph: {
+    title: 'Outlfy - Tech Partners',
+    description: 'Outlfy helps businesses succeed with custom software development and technology strategy',
+    url: 'https://www.outlfy.com/',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy - Tech Partners'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Outlfy - Tech Partners',
+    description: 'Outlfy helps businesses succeed with custom software development and technology strategy',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
 };
 
 import RootLayout from "@/components/common/layout/RootLayout";

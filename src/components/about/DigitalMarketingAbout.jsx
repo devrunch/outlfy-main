@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-const ACCENT = "#22B573";
+const ACCENT = "#CCFF00";
 const BG = "#0B0B0B";
 const BORDER = "#2a2a2a";
 const TOOLTIP_BG = "#141414";
@@ -419,12 +419,13 @@ const DigitalMarketingAbout = () => {
         href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;500;600&display=swap"
       />
 
-      <div style={styles.container}>
-        <div style={styles.leftCol}>
-          <div style={styles.grid}>
+      <div className="dma-container" style={styles.container}>
+        <div className="dma-left" style={styles.leftCol}>
+          <div className="dma-grid" style={styles.grid}>
             {cards.map((card, i) => (
               <div
                 key={card.title}
+                className="dma-card"
                 style={styles.card}
                 onMouseEnter={() => hoverCapable && setActiveIndex(i)}
                 onMouseLeave={() => hoverCapable && setActiveIndex((cur) => (cur === i ? null : cur))}
@@ -437,8 +438,8 @@ const DigitalMarketingAbout = () => {
                 <div style={{ marginBottom: 10 }}>
                   <card.Icon />
                 </div>
-                <div style={styles.cardTitle}>{card.title}</div>
-                <div style={styles.cardBody}>{card.body}</div>
+                <div className="dma-card-title" style={styles.cardTitle}>{card.title}</div>
+                <div className="dma-card-body" style={styles.cardBody}>{card.body}</div>
 
                 {!hoverCapable && openIndex === i && (
                   <div style={styles.inlineDiagram}>
@@ -450,7 +451,7 @@ const DigitalMarketingAbout = () => {
           </div>
         </div>
 
-        <div style={styles.rightCol}>
+        <div className="dma-right" style={styles.rightCol}>
           <div style={styles.eyebrow}>START HERE</div>
           <h2 style={styles.heading}>
             It isn&apos;t one problem.
@@ -470,6 +471,44 @@ const DigitalMarketingAbout = () => {
           </p>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .dma-container {
+            flex-direction: column !important;
+            padding: 64px 24px !important;
+          }
+
+          .dma-right {
+            order: 1 !important;
+            flex: 1 1 auto !important;
+            width: 100% !important;
+          }
+
+          .dma-left {
+            order: 2 !important;
+            flex: 1 1 auto !important;
+            width: 100% !important;
+          }
+
+          .dma-grid {
+            grid-template-columns: 1fr !important;
+            max-width: 100% !important;
+            width: 100% !important;
+          }
+
+          .dma-card {
+            aspect-ratio: auto !important;
+            width: 100% !important;
+          }
+
+          .dma-card-title,
+          .dma-card-body {
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+          }
+        }
+      `}</style>
 
       {hoverCapable &&
         mounted &&
@@ -570,7 +609,7 @@ const styles = {
     fontWeight: 700,
     fontSize: 14,
     letterSpacing: 1.5,
-    color: ACCENT,
+    color: "#D2F53C",
     marginBottom: 16,
   },
   heading: {

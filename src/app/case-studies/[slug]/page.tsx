@@ -49,6 +49,8 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
     };
   }
 
+  const ogImage = caseStudy.featuredImage?.url || 'https://www.outlfy.com/assets/og-image.jpg';
+
   return {
     title: `${caseStudy.title} | Case Study | Outlfy`,
     description: caseStudy.seo?.metaDescription || caseStudy.summary || `Discover how Outlfy helped ${caseStudy.clientName} achieve their digital transformation goals.`,
@@ -56,14 +58,23 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
     openGraph: {
       title: caseStudy.seo?.ogTitle || caseStudy.title,
       description: caseStudy.seo?.ogDescription || caseStudy.summary,
-      images: caseStudy.featuredImage?.url ? [caseStudy.featuredImage.url] : [],
+      url: `https://www.outlfy.com/case-studies/${resolvedParams.slug}`,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: caseStudy.title
+        }
+      ],
+      siteName: 'Outlfy',
       type: 'article',
     },
     twitter: {
       card: 'summary_large_image',
       title: caseStudy.title,
       description: caseStudy.summary,
-      images: caseStudy.featuredImage?.url ? [caseStudy.featuredImage.url] : [],
+      images: [ogImage],
     },
   };
 }

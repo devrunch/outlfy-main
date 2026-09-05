@@ -173,7 +173,7 @@
         background-position: left;
         z-index: -1;
       }
-      // update v0.2 
+      // update v0.2
       &::after {
         position: absolute;
         content: "";
@@ -184,6 +184,14 @@
         background-image: url(/assets/imgs/shape/6.png);
         background-repeat: no-repeat;
         background-position: right top;
+
+        // Fixed-pixel offset from the section's own top edge — on mobile
+        // the right column's paragraph starts almost immediately below
+        // that point, so the sparkle lands on top of the text instead of
+        // in clear space. It's purely decorative, so just drop it here.
+        @media #{$sm} {
+          display: none;
+        }
       }
 
       .hero3-img {
@@ -209,7 +217,10 @@
 
         @media #{$sm} {
           position: unset;
-          margin-left: -258px;
+          margin-left: 0;
+          max-width: 100%;
+          width: 100%;
+          height: auto;
         }
 
         &-anim {
@@ -281,7 +292,7 @@
         }
 
         @media #{$sm} {
-          font-size: 80px;
+          font-size: clamp(48px, 18vw, 80px);
         }
 
         // Relocated into the aside column, paired with TECH in a diagonal
@@ -309,7 +320,12 @@
           }
 
           @media #{$sm} {
-            font-size: 48px;
+            // Sized so "PARTNER" (the longer of the two headline words)
+            // fully fits inside its ~46% column with room to spare —
+            // cropping it looked broken rather than deliberate at this
+            // width, so this keeps the base overflow/ellipsis as a
+            // fallback instead of intentionally bleeding past the edge.
+            font-size: clamp(30px, 9.5vw, 40px);
           }
         }
       }
@@ -344,7 +360,7 @@
         }
 
         @media #{$sm} {
-          font-size: 90px;
+          font-size: clamp(46px, 18vw, 53px);
         }
       }
 
@@ -356,6 +372,90 @@
         column-gap: 20px;
       }
 
+      // Hidden above $sm; the media query below turns it back on. This
+      // unconditional rule must come BEFORE that @media block in source
+      // order — same-specificity ties resolve by source order regardless
+      // of which side has the media condition, so declaring it after would
+      // permanently win over the query's `display: block` and hide the
+      // mobile CTA at every width, media query included.
+      .hero__text-3--mobile {
+        display: none;
+      }
+
+      // Mobile: on request, the desktop diagonal (TECH top-left / PARTNER
+      // bottom-right) is kept as a two-column composition instead of
+      // stacking — Bootstrap's row defaults would otherwise stack both
+      // columns full width below $lg, so the 50% split is forced back on
+      // here. TECH and PARTNER share one size (see .sec-title /
+      // .title-right--aside above), sized so "PARTNER" — the longer word —
+      // fits fully inside its column instead of being cropped.
+      @media #{$sm} {
+        .container {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+
+        .hero__tech-col,
+        .hero__partner-col {
+          width: 50%;
+          max-width: 50%;
+          flex: 0 0 50%;
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+
+        .sec-sub-title {
+          font-size: 13px;
+          padding-right: 14px;
+
+          &::after {
+            width: 22px;
+          }
+        }
+
+        .hero__aside-text p {
+          font-size: 11px;
+          line-height: 1.45;
+        }
+
+        // Nudges TECH's paragraph down a bit so the TECH → PARTNER line
+        // reads as a clean diagonal instead of TECH's block sitting flush
+        // against the top while PARTNER's side has a paragraph + icon
+        // above it.
+        .hero__aside-text--primary {
+          margin-top: 10px !important;
+        }
+
+        // The desktop CTA block lives inside the 50%-wide TECH column,
+        // which isn't wide enough for these two buttons to read as
+        // single-line pills. Swap it for the full-container-width copy
+        // rendered right after the row (see DigitalMarketingHero.jsx).
+        .hero__text-3--desktop {
+          display: none;
+        }
+
+        .hero__text-3--mobile {
+          display: block;
+          margin-top: -45px;
+        }
+
+        // Both buttons' combined text can't fit on one line at any
+        // legible size on a phone (desktop has ~700px+ to work with here;
+        // mobile has ~350px total) — so unlike the headline above, this
+        // stays a stacked column. Same colors/weight as desktop, just
+        // arranged vertically instead of side-by-side.
+        .hero__text-3--mobile .hero__cta-group {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+        }
+
+        .hero__text-3--mobile .wc-btn-simple {
+          width: 100%;
+          font-size: 13px;
+          padding: 14px 20px;
+        }
+      }
 
       .wrapper {
         --clip-path: circle(65px at left);

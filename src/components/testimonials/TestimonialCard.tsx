@@ -120,6 +120,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
   };
 
   const data = testimonial || defaultTestimonial;
+  const videoSrc = normalizeVideoUrl(data.videoUrl);
 
   // FEATURED CARD - DARK MATTE
   if (false) {
@@ -203,6 +204,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     'testimonial-card--regular',
     fixedSize ? 'testimonial-card--fixed' : '',
     expandable ? 'testimonial-card--clickable' : '',
+    videoSrc ? 'testimonial-card--has-video' : '',
   ].filter(Boolean).join(' ');
 
   return (
@@ -217,10 +219,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       >
 
           {/* Video if exists */}
-          {normalizeVideoUrl(data.videoUrl) && (
+          {videoSrc && (
             <div className="testimonial-card__video">
               <iframe
-                src={normalizeVideoUrl(data.videoUrl)}
+                src={videoSrc}
                 title="Video Testimonial"
                 frameBorder="0"
                 allowFullScreen
@@ -314,10 +316,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
             <i className="fa-solid fa-xmark"></i>
           </button>
 
-          {normalizeVideoUrl(data.videoUrl) && (
+          {videoSrc && (
             <div className="testimonial-card__video">
               <iframe
-                src={normalizeVideoUrl(data.videoUrl)}
+                src={videoSrc}
                 title="Video Testimonial"
                 frameBorder="0"
                 allowFullScreen
