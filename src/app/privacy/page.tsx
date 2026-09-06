@@ -4,6 +4,27 @@ import "@/styles/legal-pages.css";
 export const metadata = {
   title: "Privacy Policy | Outlfy",
   description: "Privacy Policy for Outlfy digital agency services",
+  openGraph: {
+    title: "Privacy Policy | Outlfy",
+    description: "Privacy Policy for Outlfy digital agency services",
+    url: "https://www.outlfy.com/privacy",
+    type: "website",
+    images: [
+      {
+        url: "https://www.outlfy.com/assets/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Outlfy Privacy Policy"
+      }
+    ],
+    siteName: "Outlfy"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Outlfy",
+    description: "Privacy Policy for Outlfy digital agency services",
+    images: ["https://www.outlfy.com/assets/og-image.jpg"]
+  }
 };
 
 export default function PrivacyPolicyPage() {

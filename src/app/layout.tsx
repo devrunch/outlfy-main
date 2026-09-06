@@ -12,9 +12,7 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
-  // Required for Next.js to resolve relative openGraph/twitter image URLs
-  // (e.g. case study featured images served from /api/case-studies/.../media)
-  // into absolute URLs — without it Next falls back to localhost in prod.
+
   metadataBase: new URL('https://www.outlfy.com'),
   title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
   description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',

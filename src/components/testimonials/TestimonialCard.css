@@ -279,6 +279,18 @@
   .testimonial-card--fixed .testimonial-card__text {
     -webkit-line-clamp: 5;
   }
+
+  /* A video pushes the footer (name/logo) past the fixed 300px card height,
+     which the grid wrapper's overflow:hidden then clips off entirely,
+     leaving only the video visible. Let the card grow to fit instead. */
+  .testimonial-card--fixed.testimonial-card--has-video {
+    height: auto;
+    min-height: 300px;
+  }
+
+  .testimonial-card--fixed.testimonial-card--has-video .testimonial-card__text {
+    -webkit-line-clamp: 3;
+  }
 }
 
 /* Expand modal — a scaled-up version of the same card: same white surface,

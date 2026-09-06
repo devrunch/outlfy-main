@@ -145,7 +145,7 @@ const DigitalMarketingHero = () => {
       <section className="hero__area-3" ref={heroArea}>
         <div className="container">
           <div className="row align-items-start">
-            <div className="col-xxl-6 col-xl-6 col-lg-6">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 hero__tech-col">
               <div className="hero__inner-3" style={{ transition: "opacity 0.5s ease-in-out" }}>
                 <div className="sec-title-wrapper">
                   <h2 className="sec-sub-title">YOUR</h2>
@@ -156,13 +156,13 @@ const DigitalMarketingHero = () => {
                   </div>
                 </div>
 
-                <div className="hero__aside-text mt-3 mb-3">
+                <div className="hero__aside-text hero__aside-text--primary mt-3 mb-3">
                   <p ref={heroTextAnim2}>
                     We help non-tech founders scale faster by managing the complete tech and data side of their business — from automation to analytics.
                   </p>
                 </div>
 
-                <div className="hero__text-3">
+                <div className="hero__text-3 hero__text-3--desktop">
                   <div className="hero__cta-group">
                     <a
                       ref={buttonAmin1}
@@ -198,7 +198,7 @@ const DigitalMarketingHero = () => {
             </div>
 
             <div className="col-xxl-6 col-xl-6 col-lg-6 hero__partner-col">
-              <div className="hero__aside-text mb-4">
+              <div className="hero__aside-text hero__aside-text--secondary mb-4">
                 <p className="hero__text-animation" ref={heroTextAnim}>
                   We audit, design, and deploy the systems that make your company run smoother, faster, and smarter — so you can focus entirely on growth
                 </p>
@@ -206,6 +206,33 @@ const DigitalMarketingHero = () => {
               <h3 className="sec-title-small title-right title-right--aside" ref={titleRight}>
                 PARTNER
               </h3>
+            </div>
+          </div>
+
+          {/* Mobile-only: the desktop CTA above lives inside the 50%-wide
+              TECH column, which isn't wide enough for these buttons to read
+              as single-line pills at phone widths. This copy renders full
+              container width below the diagonal headline instead; it's
+              hidden except at $sm, where the desktop copy hides in turn
+              (see _hero.scss). No entrance animation here, unlike the
+              desktop copy — it's not worth wiring a second GSAP ref pair
+              for a block that only exists below ~767px. */}
+          <div className="hero__text-3 hero__text-3--mobile">
+            <div className="hero__cta-group">
+              <a
+                href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
+                className="wc-btn-simple"
+              >
+                Apply for a free strategy session.
+                <i className="fa-solid fa-arrow-right wc-btn-simple__icon"></i>
+              </a>
+              <a
+                href="#howwework"
+                onClick={handleSmoothScroll}
+                className="wc-btn-simple__light"
+              >
+                See How we work.
+              </a>
             </div>
           </div>
         </div>

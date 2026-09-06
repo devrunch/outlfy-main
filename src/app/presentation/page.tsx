@@ -1,4 +1,35 @@
 import React from 'react'
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Presentation | Outlfy',
+  description: 'View the Outlfy presentation deck.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+  openGraph: {
+    title: 'Presentation | Outlfy',
+    description: 'View the Outlfy presentation deck.',
+    url: 'https://www.outlfy.com/presentation',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy Presentation'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Presentation | Outlfy',
+    description: 'View the Outlfy presentation deck.',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
+};
 
 const page = () => {
   return (

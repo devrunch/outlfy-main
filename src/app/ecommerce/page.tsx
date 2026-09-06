@@ -3,6 +3,27 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Ecommerce Solutions | Outlfy',
   description: 'Outlfy provides comprehensive ecommerce solutions to help businesses grow online',
+  openGraph: {
+    title: 'Ecommerce Solutions | Outlfy',
+    description: 'Outlfy provides comprehensive ecommerce solutions to help businesses grow online',
+    url: 'https://www.outlfy.com/ecommerce',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Outlfy Ecommerce Solutions'
+      }
+    ],
+    siteName: 'Outlfy'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ecommerce Solutions | Outlfy',
+    description: 'Outlfy provides comprehensive ecommerce solutions to help businesses grow online',
+    images: ['https://www.outlfy.com/assets/og-image.jpg']
+  }
 };
 
 import RootLayout from "@/components/common/layout/RootLayout";
