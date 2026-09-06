@@ -61,14 +61,50 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
     }));
   };
 
-  const handleImageUpload = (e, type) => {
+  // Uploads land here at full camera/screenshot resolution (up to 5MB), but
+  // every testimonial is stored (and re-shipped on every public page load)
+  // as a base64 blob. Downscaling to the size the card actually displays
+  // keeps that payload in the tens-of-KB range instead of megabytes.
+  const compressImage = (file, { maxDimension, mimeType, quality = 0.82 }) => {
+    return new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(objectUrl);
+        resolve(canvas.toDataURL(mimeType, quality));
+      };
+      img.onerror = (err) => {
+        URL.revokeObjectURL(objectUrl);
+        reject(err);
+      };
+      img.src = objectUrl;
+    });
+  };
+
+  const handleImageUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
 
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
     if (type === 'logo') allowedTypes.push('image/svg+xml');
-    
+
     if (!allowedTypes.includes(file.type)) {
       setErrors(prev => ({
         ...prev,
@@ -86,9 +122,7 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64 = event.target.result;
+    const applyImage = (base64) => {
       if (type === 'profile') {
         setFormData(prev => ({ ...prev, profilePicture: base64 }));
         setProfilePreview(base64);
@@ -98,7 +132,31 @@ const TestimonialForm = ({ testimonial = null, onSubmit, onCancel }) => {
       }
       setErrors(prev => ({ ...prev, [type]: '' }));
     };
-    reader.readAsDataURL(file);
+
+    const readAsIs = () => {
+      const reader = new FileReader();
+      reader.onload = (event) => applyImage(event.target.result);
+      reader.readAsDataURL(file);
+    };
+
+    // SVG logos are already small vector files, and GIFs may be animated —
+    // recompressing either through a canvas would rasterize/strip them, so
+    // store those as-is. Everything else gets downscaled + recompressed.
+    if (file.type === 'image/svg+xml' || file.type === 'image/gif') {
+      readAsIs();
+      return;
+    }
+
+    try {
+      const base64 = await compressImage(file, {
+        maxDimension: type === 'profile' ? 480 : 400,
+        mimeType: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
+        quality: 0.82,
+      });
+      applyImage(base64);
+    } catch (error) {
+      readAsIs();
+    }
   };
 
   const validateForm = () => {

@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-export const dynamic = "force-dynamic";
+// This page has no server-side data fetch of its own — the case study list
+// is loaded client-side (see CaseStudyListing), so there's nothing here
+// that needs force-dynamic; the static shell can be prerendered.
 export const metadata: Metadata = {
   title: 'Case Studies | Outlfy - Successful Digital Transformation Projects',
   description: 'Explore our successful projects and discover how we transform ideas into powerful digital solutions that drive real business growth.',

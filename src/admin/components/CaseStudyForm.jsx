@@ -325,6 +325,43 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
     }));
   };
 
+  // Uploads land here at full camera/screenshot resolution (up to 5MB), but
+  // every case study is stored (and re-shipped on every public page load)
+  // as a base64 blob. Downscaling to the size the page actually displays
+  // keeps that payload in the tens/low-hundreds-of-KB range instead of
+  // megabytes.
+  const compressImage = (file, { maxDimension, mimeType, quality = 0.82 }) => {
+    return new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(objectUrl);
+        resolve(canvas.toDataURL(mimeType, quality));
+      };
+      img.onerror = (err) => {
+        URL.revokeObjectURL(objectUrl);
+        reject(err);
+      };
+      img.src = objectUrl;
+    });
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -342,35 +379,52 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
     }
 
     setImageUploading(true);
-    
-    try {
+
+    const applyFeaturedImage = (base64String) => {
+      setForm(prev => ({
+        ...prev,
+        featuredImage: {
+          ...prev.featuredImage,
+          url: base64String,
+          type: "base64"
+        }
+      }));
+      setMessage({ type: "success", text: "Image uploaded successfully!" });
+      setImageUploading(false);
+    };
+
+    const readAsIs = () => {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setForm(prev => ({
-          ...prev,
-          featuredImage: {
-            ...prev.featuredImage,
-            url: base64String,
-            type: "base64"
-          }
-        }));
-        setMessage({ type: "success", text: "Image uploaded successfully!" });
-        setImageUploading(false);
-      };
+      reader.onloadend = () => applyFeaturedImage(reader.result);
       reader.onerror = () => {
         setMessage({ type: "danger", text: "Error reading the image file." });
         setImageUploading(false);
       };
       reader.readAsDataURL(file);
+    };
+
+    // SVGs are already small vector files, and GIFs may be animated —
+    // recompressing either through a canvas would rasterize/strip them, so
+    // store those as-is. Everything else gets downscaled + recompressed.
+    if (file.type === 'image/svg+xml' || file.type === 'image/gif') {
+      readAsIs();
+      return;
+    }
+
+    try {
+      const base64String = await compressImage(file, {
+        maxDimension: 1200,
+        mimeType: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
+        quality: 0.82,
+      });
+      applyFeaturedImage(base64String);
     } catch (error) {
-      console.error('Error uploading image:', error);
-      setMessage({ type: "danger", text: "Error uploading image." });
-      setImageUploading(false);
+      console.error('Error compressing image:', error);
+      readAsIs();
     }
   };
 
-  const handleClientLogoUpload = (e) => {
+  const handleClientLogoUpload = async (e) => {
     const input = e.target;
     const file = input.files?.[0];
     if (!file) return;
@@ -389,51 +443,65 @@ const CaseStudyForm = ({ selected, onSave, onCancel }) => {
 
     setClientLogoUploading(true);
 
-    try {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = typeof reader.result === 'string' ? reader.result : '';
-        if (!base64String) {
-          setMessage({ type: "danger", text: "Error processing client logo." });
-          setClientLogoUploading(false);
-          return;
-        }
-
-        setForm((prev) => ({
-          ...prev,
-          clientLogo: base64String,
-        }));
-
-        setTouched((prev) => ({ ...prev, clientLogo: true }));
-
-        const error = validateField('clientLogo', base64String);
-        setErrors((prev) => {
-          const newErrors = { ...prev };
-          if (error) {
-            newErrors.clientLogo = error;
-          } else {
-            delete newErrors.clientLogo;
-          }
-          return newErrors;
-        });
-
-        setMessage({ type: "success", text: "Client logo uploaded successfully!" });
-        input.value = "";
+    const applyClientLogo = (base64String) => {
+      if (!base64String) {
+        setMessage({ type: "danger", text: "Error processing client logo." });
         setClientLogoUploading(false);
-      };
+        return;
+      }
 
+      setForm((prev) => ({
+        ...prev,
+        clientLogo: base64String,
+      }));
+
+      setTouched((prev) => ({ ...prev, clientLogo: true }));
+
+      const error = validateField('clientLogo', base64String);
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        if (error) {
+          newErrors.clientLogo = error;
+        } else {
+          delete newErrors.clientLogo;
+        }
+        return newErrors;
+      });
+
+      setMessage({ type: "success", text: "Client logo uploaded successfully!" });
+      input.value = "";
+      setClientLogoUploading(false);
+    };
+
+    const readAsIs = () => {
+      const reader = new FileReader();
+      reader.onloadend = () => applyClientLogo(typeof reader.result === 'string' ? reader.result : '');
       reader.onerror = () => {
         setMessage({ type: "danger", text: "Error reading the client logo file." });
         input.value = "";
         setClientLogoUploading(false);
       };
-
       reader.readAsDataURL(file);
+    };
+
+    // SVGs are already small vector files, and GIFs may be animated —
+    // recompressing either through a canvas would rasterize/strip them, so
+    // store those as-is. Everything else gets downscaled + recompressed.
+    if (file.type === 'image/svg+xml' || file.type === 'image/gif') {
+      readAsIs();
+      return;
+    }
+
+    try {
+      const base64String = await compressImage(file, {
+        maxDimension: 400,
+        mimeType: file.type === 'image/png' ? 'image/png' : 'image/jpeg',
+        quality: 0.82,
+      });
+      applyClientLogo(base64String);
     } catch (error) {
-      console.error('Error uploading client logo:', error);
-      setMessage({ type: "danger", text: "Error uploading client logo." });
-      input.value = "";
-      setClientLogoUploading(false);
+      console.error('Error compressing client logo:', error);
+      readAsIs();
     }
   };
 

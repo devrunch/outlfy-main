@@ -1,12 +1,21 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { connectDB } from '@/lib/utils/database';
-import { 
-  getTestimonialById, 
-  updateTestimonial, 
+import {
+  getTestimonialById,
+  updateTestimonial,
   deleteTestimonial,
   updateTestimonialStatus,
-  toggleFeatured 
+  toggleFeatured
 } from '@/admin/models/Testimonial';
+
+// The homepage and /testimonials page are cached (revalidate = 60s) so they
+// don't re-hit Mongo on every visit. Any admin change that affects what's
+// publicly shown needs to bust that cache immediately.
+const revalidatePublicTestimonialPages = () => {
+  revalidatePath('/');
+  revalidatePath('/testimonials');
+};
 
 // CORS helpers
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '*')
@@ -95,9 +104,10 @@ export async function PUT(request, { params }) {
     }
 
     const result = await updateTestimonial(id, data);
-    return NextResponse.json(result, { 
+    if (result.success) revalidatePublicTestimonialPages();
+    return NextResponse.json(result, {
       status: result.success ? 200 : 404,
-      headers: corsHeaders(origin) 
+      headers: corsHeaders(origin)
     });
 
   } catch (error) {
@@ -145,9 +155,10 @@ export async function PATCH(request, { params }) {
       );
     }
 
-    return NextResponse.json(result, { 
+    if (result.success) revalidatePublicTestimonialPages();
+    return NextResponse.json(result, {
       status: result.success ? 200 : 404,
-      headers: corsHeaders(origin) 
+      headers: corsHeaders(origin)
     });
 
   } catch (error) {
@@ -179,9 +190,10 @@ export async function DELETE(request, { params }) {
     }
 
     const result = await deleteTestimonial(id);
-    return NextResponse.json(result, { 
+    if (result.success) revalidatePublicTestimonialPages();
+    return NextResponse.json(result, {
       status: result.success ? 200 : 404,
-      headers: corsHeaders(origin) 
+      headers: corsHeaders(origin)
     });
 
   } catch (error) {

@@ -1,10 +1,14 @@
 import { Metadata } from 'next';
 import { connectDB } from '@/lib/utils/database';
 import { getTestimonials } from '@/admin/models/Testimonial';
+import { toMediaUrl } from '@/lib/utils/testimonialMedia';
 import RootLayout from "@/components/common/layout/RootLayout";
 import TestimonialGrid from '@/components/testimonials/TestimonialGrid';
 import TestimonialHero from '@/components/testimonials/TestimonialHero';
-export const dynamic = 'force-dynamic';
+// Testimonials only change via admin approval (which calls revalidatePath),
+// so this page can be served from cache instead of re-querying Mongo (and
+// re-shipping every testimonial's base64 images) on every request.
+export const revalidate = 60;
 export const metadata: Metadata = {
   title: 'Client Testimonials | Outlfy Success Stories',
   description: 'Read what our clients say about Outlfy. Real success stories from businesses we\'ve helped scale with smart strategies and scalable solutions.',
@@ -58,12 +62,17 @@ async function getTestimonialsData(): Promise<any[]> {
       // Convert Mongoose documents to plain objects
       const plainData = result.data.map(item => {
         const plain = toPlainObject(item);
+        const id = plain._id?.toString() || plain._id;
+        const updatedAt = plain.updatedAt instanceof Date ? plain.updatedAt.toISOString() : plain.updatedAt;
         // Ensure dates are serialized as strings
         return {
           ...plain,
-          _id: plain._id?.toString() || plain._id,
+          _id: id,
           createdAt: plain.createdAt instanceof Date ? plain.createdAt.toISOString() : plain.createdAt,
-          updatedAt: plain.updatedAt instanceof Date ? plain.updatedAt.toISOString() : plain.updatedAt,
+          updatedAt,
+          profilePicture: toMediaUrl(id, 'profile', plain.profilePicture, updatedAt),
+          companyLogo: toMediaUrl(id, 'logo', plain.companyLogo, updatedAt),
+          audioUrl: toMediaUrl(id, 'audio', plain.audioUrl, updatedAt),
         };
       });
       return plainData;

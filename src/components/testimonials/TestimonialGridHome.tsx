@@ -1,7 +1,7 @@
-import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { connectDB } from "@/lib/utils/database";
 import { getFeaturedTestimonials } from "@/admin/models/Testimonial";
+import { toMediaUrl } from "@/lib/utils/testimonialMedia";
 import TestimonialCard from "./TestimonialCard";
 import TestimonialHero from "./TestimonialHero";
 
@@ -49,18 +49,25 @@ const normalizeTestimonials = (items: unknown[]): Testimonial[] => {
         ? plain.createdAt
         : new Date().toISOString();
 
+    const id = typeof plain._id === "string" ? plain._id : plain._id?.toString?.() ?? `testimonial-${index}`;
+    const updatedAt = plain.updatedAt instanceof Date
+      ? plain.updatedAt.toISOString()
+      : typeof plain.updatedAt === "string"
+        ? plain.updatedAt
+        : undefined;
+
     return {
-      _id: typeof plain._id === "string" ? plain._id : plain._id?.toString?.() ?? `testimonial-${index}`,
+      _id: id,
       name: typeof plain.name === "string" ? plain.name : "",
       position: typeof plain.position === "string" ? plain.position : "",
       company: typeof plain.company === "string" ? plain.company : "",
       testimonial: typeof plain.testimonial === "string" ? plain.testimonial : "",
-      profilePicture: typeof plain.profilePicture === "string" ? plain.profilePicture : "",
-      companyLogo: typeof plain.companyLogo === "string" ? plain.companyLogo : "",
+      profilePicture: toMediaUrl(id, "profile", typeof plain.profilePicture === "string" ? plain.profilePicture : "", updatedAt),
+      companyLogo: toMediaUrl(id, "logo", typeof plain.companyLogo === "string" ? plain.companyLogo : "", updatedAt),
       linkedinUrl: typeof plain.linkedinUrl === "string" ? plain.linkedinUrl : "",
       companySiteUrl: typeof plain.companySiteUrl === "string" ? plain.companySiteUrl : "",
       videoUrl: typeof plain.videoUrl === "string" ? plain.videoUrl : undefined,
-      audioUrl: typeof plain.audioUrl === "string" ? plain.audioUrl : undefined,
+      audioUrl: toMediaUrl(id, "audio", typeof plain.audioUrl === "string" ? plain.audioUrl : "", updatedAt) || undefined,
       projectType: typeof plain.projectType === "string" ? plain.projectType : "",
       status: typeof plain.status === "string" ? plain.status : "",
       featured: false,
@@ -71,8 +78,6 @@ const normalizeTestimonials = (items: unknown[]): Testimonial[] => {
 };
 
 const fetchFeaturedTestimonials = async (): Promise<Testimonial[] | null> => {
-  noStore();
-
   try {
     await connectDB();
     const result = (await getFeaturedTestimonials()) as FeaturedTestimonialResult;

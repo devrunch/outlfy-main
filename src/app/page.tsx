@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import { connectDB } from '@/lib/utils/database';
 import { getFeaturedTestimonials } from '@/admin/models/Testimonial';
+import { toMediaUrl } from '@/lib/utils/testimonialMedia';
 
 export const metadata: Metadata = {
   title: 'Outlfy - Tech Partners',
@@ -27,6 +29,11 @@ export const metadata: Metadata = {
     images: ['https://www.outlfy.com/assets/og-image.jpg']
   }
 };
+
+// Testimonials only change via admin approval (which calls revalidatePath),
+// so the homepage can be served from cache instead of re-querying Mongo
+// (and re-shipping every testimonial's base64 images) on every request.
+export const revalidate = 60;
 
 import RootLayout from "@/components/common/layout/RootLayout";
 import DigitalMarketingHero from "@/components/hero/DigitalMarketingHero";
@@ -55,18 +62,25 @@ const normalizeFeaturedTestimonials = (items: unknown[]): FeaturedTestimonial[] 
         ? plain.createdAt
         : new Date().toISOString();
 
+    const id = typeof plain._id === 'string' ? plain._id : plain._id?.toString?.() ?? `testimonial-${index}`;
+    const updatedAt = plain.updatedAt instanceof Date
+      ? plain.updatedAt.toISOString()
+      : typeof plain.updatedAt === 'string'
+        ? plain.updatedAt
+        : undefined;
+
     return {
-      _id: typeof plain._id === 'string' ? plain._id : plain._id?.toString?.() ?? `testimonial-${index}`,
+      _id: id,
       name: typeof plain.name === 'string' ? plain.name : '',
       position: typeof plain.position === 'string' ? plain.position : '',
       company: typeof plain.company === 'string' ? plain.company : '',
       testimonial: typeof plain.testimonial === 'string' ? plain.testimonial : '',
-      profilePicture: typeof plain.profilePicture === 'string' ? plain.profilePicture : '',
-      companyLogo: typeof plain.companyLogo === 'string' ? plain.companyLogo : '',
+      profilePicture: toMediaUrl(id, 'profile', typeof plain.profilePicture === 'string' ? plain.profilePicture : '', updatedAt),
+      companyLogo: toMediaUrl(id, 'logo', typeof plain.companyLogo === 'string' ? plain.companyLogo : '', updatedAt),
       linkedinUrl: typeof plain.linkedinUrl === 'string' ? plain.linkedinUrl : '',
       companySiteUrl: typeof plain.companySiteUrl === 'string' ? plain.companySiteUrl : '',
       videoUrl: typeof plain.videoUrl === 'string' ? plain.videoUrl : undefined,
-      audioUrl: typeof plain.audioUrl === 'string' ? plain.audioUrl : undefined,
+      audioUrl: toMediaUrl(id, 'audio', typeof plain.audioUrl === 'string' ? plain.audioUrl : '', updatedAt) || undefined,
       projectType: typeof plain.projectType === 'string' ? plain.projectType : '',
       status: typeof plain.status === 'string' ? plain.status : '',
       featured: true,
@@ -135,17 +149,23 @@ async function fetchFeaturedTestimonialsWithTimeout(timeout = 10000): Promise<Fe
   }
 }
 
-export default async function DigitalMarketing() {
-  // Run a guarded fetch — if it times out we render the page without testimonials.
+// Isolated in its own component so Suspense can stream the rest of the
+// homepage immediately instead of blocking on this DB round-trip.
+async function FeaturedTestimonials() {
   const featuredTestimonials = await fetchFeaturedTestimonialsWithTimeout(10000);
+  return <TestimonialGrid testimonials={featuredTestimonials || []} />;
+}
 
+export default function DigitalMarketing() {
   return (
     <main suppressHydrationWarning>
       <EntryOfferPopup />
       <RootLayout header="header1" footer="footer1">
         <DigitalMarketingHero />
         <DigitalMarketingBrand />
-        <TestimonialGrid testimonials={featuredTestimonials || []} />
+        <Suspense fallback={null}>
+          <FeaturedTestimonials />
+        </Suspense>
         <DigitalMarketingAbout />
         <TheOffer />
         {/* <DigitalMarketingProtfolio /> */}

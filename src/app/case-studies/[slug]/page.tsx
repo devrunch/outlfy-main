@@ -1,18 +1,43 @@
 import { Metadata } from 'next';
+import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import RootLayout from "@/components/common/layout/RootLayout";
 import CaseStudyDetail from "@/components/casestudy/CaseStudyDetail";
 import dbConnect from "@/lib/mongodb";
 import CaseStudyModel from "@/admin/models/CaseStudy";
 import { CaseStudy } from '@/types/case-study';
-export const dynamic = "force-dynamic";
+import { toMediaUrl } from '@/lib/utils/caseStudyMedia';
+
+// Case studies only change via admin publish/edit (which calls
+// revalidatePath), so this page can be served from cache instead of
+// re-querying Mongo on every request.
+export const revalidate = 60;
+
 interface CaseStudyPageProps {
   params: Promise<{
     slug: string;
   }>;
 }
 
-async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
+// Without this, a dynamic segment isn't eligible for the Full Route Cache
+// at all (Next.js server-renders it on demand for every request, ignoring
+// `revalidate`) — this is what actually makes ISR apply here.
+export async function generateStaticParams() {
+  try {
+    await dbConnect();
+    const slugs = await CaseStudyModel.find({ status: 'published' })
+      .select('slug')
+      .lean<{ slug: string }[]>();
+    return slugs.map((cs) => ({ slug: cs.slug }));
+  } catch (error) {
+    console.error('Error generating case study static params:', error);
+    return [];
+  }
+}
+
+// Wrapped in React's cache() so generateMetadata and the page component
+// share a single Mongo query per request instead of running it twice.
+const getCaseStudy = cache(async (slug: string): Promise<CaseStudy | null> => {
   try {
     await dbConnect();
 
@@ -31,12 +56,22 @@ async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
       JSON.stringify(caseStudy)
     ) as CaseStudy;
 
+    const id = (serializedCaseStudy as any)._id;
+    const updatedAt = (serializedCaseStudy as any).updatedAt;
+
+    if (serializedCaseStudy.featuredImage?.url) {
+      serializedCaseStudy.featuredImage.url = toMediaUrl(id, 'featured', serializedCaseStudy.featuredImage.url, updatedAt);
+    }
+    if (serializedCaseStudy.clientLogo) {
+      serializedCaseStudy.clientLogo = toMediaUrl(id, 'logo', serializedCaseStudy.clientLogo, updatedAt);
+    }
+
     return serializedCaseStudy;
   } catch (error) {
     console.error('Error fetching case study:', error);
     return null;
   }
-}
+});
 
 export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
   const resolvedParams = await params;
