@@ -76,7 +76,7 @@ const EntryOfferPopup = () => {
           strategy session shows you exactly where — and how to plug it.
         </p>
         <a
-          href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
+          href="https://calendly.com/_outlfy/meeting"
           target="_blank"
           rel="noopener noreferrer"
           className="wc-btn-simple entry-offer__cta"
