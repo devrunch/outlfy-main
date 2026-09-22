@@ -103,7 +103,7 @@ const Contact1 = () => {
             <div className="col-12">
               <div className="contact__quick-grid">
                 <a
-                  href="https://calendly.com/gaashish575/free-45-min-consultancy-with-outlfy"
+                  href="https://calendly.com/_outlfy/meeting"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact__quick-card contact__quick-card--primary"
