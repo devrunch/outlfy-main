@@ -161,7 +161,12 @@ const Contact1 = () => {
                 <ul>
                   <li>
                     <span className="contact__info-label">Address</span>
-                    <span>VWWW9+W26, Lucknow, Uttar Pradesh, 226013</span>
+                    <span>UK Office: U16 Umberslade Road, Selly Oak, <br /> Birmingham, B29 7RZ, United Kingdom
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      India Office: 2nd Floor, JSV Hyundai Building, CP-53, <br /> Lucknow, UP, India
                   </li>
                 </ul>
                 <div className="contact__social">
