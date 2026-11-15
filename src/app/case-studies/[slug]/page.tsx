@@ -89,6 +89,7 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
   return {
     title: `${caseStudy.title} | Case Study | Outlfy`,
     description: caseStudy.seo?.metaDescription || caseStudy.summary || `Discover how Outlfy helped ${caseStudy.clientName} achieve their digital transformation goals.`,
+    alternates: { canonical: `/case-studies/${resolvedParams.slug}` },
     keywords: caseStudy.seo?.keywords || caseStudy.tags?.join(', '),
     openGraph: {
       title: caseStudy.seo?.ogTitle || caseStudy.title,

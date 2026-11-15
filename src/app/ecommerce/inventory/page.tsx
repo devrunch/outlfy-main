@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/ecommerce/inventory' },
   title: 'Ecommerce Inventory Management | Outlfy',
   description: 'Outlfy\'s inventory management solutions help ecommerce businesses optimize stock and improve efficiency',
   openGraph: {

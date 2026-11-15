@@ -12,7 +12,6 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
-
   metadataBase: new URL('https://www.outlfy.com'),
   title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
   description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        url: 'https://www.outlfy.com/assets/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Outlfy - Your Long-Term Partner for Scalable Business Growth'
@@ -35,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Outlfy | Your Long-Term Partner for Scalable Business Growth',
     description: 'We set up the systems, you focus on growth. Outlfy empowers businesses with smart strategies and scalable solutions.',
-    images: ['https://www.outlfy.com/assets/og-image.jpg']
+    images: ['https://www.outlfy.com/assets/og-image.png']
   },
   robots: 'index, follow'
 }

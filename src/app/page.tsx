@@ -5,6 +5,7 @@ import { getFeaturedTestimonials } from '@/admin/models/Testimonial';
 import { toMediaUrl } from '@/lib/utils/testimonialMedia';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/' },
   title: 'Outlfy - Tech Partners',
   description: 'Outlfy helps businesses succeed with custom software development and technology strategy',
   openGraph: {
