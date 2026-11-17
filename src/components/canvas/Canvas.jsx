@@ -129,9 +129,9 @@ const Canvas = ({ bladeMode = "", ofCanvasArea }) => {
                       <Link href={"#"}>SOLUTIONS</Link>
                       <div className="accordian-btn">
                         {accordion === 2 ? (
-                          <a onClick={() => openData(0)}>-</a>
+                          <a href="#" role="button" aria-label="Collapse submenu" aria-expanded="true" onClick={(e) => { e.preventDefault(); openData(0); }}>-</a>
                         ) : (
-                          <a onClick={() => openData(2)}>+</a>
+                          <a href="#" role="button" aria-label="Expand submenu" aria-expanded="false" onClick={(e) => { e.preventDefault(); openData(2); }}>+</a>
                         )}
                       </div>
                     </div>

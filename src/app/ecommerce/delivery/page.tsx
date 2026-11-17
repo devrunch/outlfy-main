@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/ecommerce/delivery' },
   title: 'Ecommerce Delivery Solutions | Outlfy',
   description: 'Optimize your ecommerce delivery process with Outlfy\'s specialized delivery solutions',
   openGraph: {

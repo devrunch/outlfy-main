@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/techaudit' },
   title: 'Free Tech Audit | Outlfy Technology Assessment',
   description: 'Get a free technology audit from Outlfy. We assess your current tech stack and provide recommendations for scalable business growth.',
   openGraph: {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        url: 'https://www.outlfy.com/assets/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Outlfy Free Tech Audit'
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Free Tech Audit | Outlfy Technology Assessment',
     description: 'Get a free technology audit from Outlfy. We assess your current tech stack and provide recommendations for scalable business growth.',
-    images: ['https://www.outlfy.com/assets/og-image.jpg']
+    images: ['https://www.outlfy.com/assets/og-image.png']
   }
 };
 

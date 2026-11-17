@@ -118,7 +118,7 @@ const StartupAgencyService = () => {
                       </h4>
                     </div>
                     <div className="service__item-icon">
-                      <Link href="/ecommerce/website">
+                      <Link href="/ecommerce/website" aria-label="Learn more about AI E-Commerce Website & App">
                         <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>
@@ -139,7 +139,7 @@ const StartupAgencyService = () => {
                       </h4>
                     </div>
                     <div className="service__item-icon">
-                      <Link href="/ecommerce/delivery">
+                      <Link href="/ecommerce/delivery" aria-label="Learn more about Delivery Management">
                         <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>
@@ -160,7 +160,7 @@ const StartupAgencyService = () => {
                       </h4>
                     </div>
                     <div className="service__item-icon">
-                      <Link href="/ecommerce/inventory">
+                      <Link href="/ecommerce/inventory" aria-label="Learn more about AI Inventory Management">
                         <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>
@@ -181,7 +181,7 @@ const StartupAgencyService = () => {
                       </h4>
                     </div>
                     <div className="service__item-icon">
-                      <Link href="/techaudit">
+                      <Link href="/techaudit" aria-label="Learn more about the free tech audit">
                         <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>

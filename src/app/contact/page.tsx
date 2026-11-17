@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
   title: 'Contact Us | Get in Touch with Outlfy',
   description: 'Ready to scale your business? Contact Outlfy today for smart strategies and scalable solutions. We set up the systems, you focus on growth.',
   openGraph: {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        url: 'https://www.outlfy.com/assets/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Contact Outlfy'
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Us | Get in Touch with Outlfy',
     description: 'Ready to scale your business? Contact Outlfy today for smart strategies and scalable solutions. We set up the systems, you focus on growth.',
-    images: ['https://www.outlfy.com/assets/og-image.jpg']
+    images: ['https://www.outlfy.com/assets/og-image.png']
   }
 };
 

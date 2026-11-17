@@ -139,6 +139,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={200}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand1}
                         alt="Novam Legal Logo"
                       />
@@ -148,6 +149,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={150}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand2}
                         alt="MyDayOne Logo"
                       />
@@ -157,6 +159,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={150}
                         height={64}
+                        style={{ height: "auto" }}
                         src={Brand3}
                         alt="Soach Global Logo"
                       />
@@ -166,6 +169,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={160}
                         height={70}
+                        style={{ height: "auto" }}
                         src={Brand4}
                         alt="Daykart Logo"
                       />
@@ -175,6 +179,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={200}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand5}
                         alt="The You Care Logo"
                       />
@@ -184,6 +189,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={160}
                         height={60}
+                        style={{ height: "auto" }}
                         src={Brand6}
                         alt="CA Cloud Desk Logo"
                       />
@@ -195,6 +201,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={200}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand1}
                         alt="Novam Legal Logo"
                       />
@@ -204,6 +211,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={150}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand2}
                         alt="MyDayOne Logo"
                       />
@@ -213,6 +221,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={150}
                         height={64}
+                        style={{ height: "auto" }}
                         src={Brand3}
                         alt="Soach Global Logo"
                       />
@@ -222,6 +231,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={160}
                         height={70}
+                        style={{ height: "auto" }}
                         src={Brand4}
                         alt="Daykart Logo"
                       />
@@ -231,6 +241,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={200}
                         height={67}
+                        style={{ height: "auto" }}
                         src={Brand5}
                         alt="The You Care Logo"
                       />
@@ -240,6 +251,7 @@ const DigitalMarketingBrand = () => {
                         priority
                         width={160}
                         height={60}
+                        style={{ height: "auto" }}
                         src={Brand6}
                         alt="CA Cloud Desk Logo"
                       />
@@ -254,6 +266,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={200}
                       height={67}
+                        style={{ height: "auto" }}
                       src={Brand1}
                       alt="Novam Legal Logo"
                     />
@@ -263,6 +276,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={150}
                       height={67}
+                        style={{ height: "auto" }}
                       src={Brand2}
                       alt="MyDayOne Logo"
                     />
@@ -272,6 +286,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={150}
                       height={64}
+                        style={{ height: "auto" }}
                       src={Brand3}
                       alt="Soach Global Logo"
                     />
@@ -281,6 +296,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={160}
                       height={70}
+                        style={{ height: "auto" }}
                       src={Brand4}
                       alt="Daykart Logo"
                     />
@@ -290,6 +306,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={200}
                       height={67}
+                        style={{ height: "auto" }}
                       src={Brand5}
                       alt="The You Care Logo"
                     />
@@ -299,6 +316,7 @@ const DigitalMarketingBrand = () => {
                       priority
                       width={160}
                       height={60}
+                        style={{ height: "auto" }}
                       src={Brand6}
                       alt="CA Cloud Desk Logo"
                     />

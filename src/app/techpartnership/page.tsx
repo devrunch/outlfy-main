@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/techpartnership' },
   title: 'Tech Partnerships | Outlfy Technology Solutions',
   description: 'Partner with Outlfy for comprehensive technology solutions. We provide smart strategies and scalable tech partnerships for business growth.',
   openGraph: {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://www.outlfy.com/assets/og-image.jpg',
+        url: 'https://www.outlfy.com/assets/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Outlfy Tech Partnerships'
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Tech Partnerships | Outlfy Technology Solutions',
     description: 'Partner with Outlfy for comprehensive technology solutions. We provide smart strategies and scalable tech partnerships for business growth.',
-    images: ['https://www.outlfy.com/assets/og-image.jpg']
+    images: ['https://www.outlfy.com/assets/og-image.png']
   }
 };
 
